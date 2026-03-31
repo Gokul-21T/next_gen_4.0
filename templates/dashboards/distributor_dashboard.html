@@ -1,0 +1,483 @@
+{% extends "base.html" %}
+
+{% block title %}Distributor Dashboard – PartLink{% endblock %}
+{% block page_title %}Distributor Dashboard{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="#">Home</a></li>
+<li class="breadcrumb-item active">Distributor Dashboard</li>
+{% endblock %}
+
+{% block page_actions %}
+<button class="btn-pl-primary" data-bs-toggle="modal" data-bs-target="#uploadInventoryModal">
+  <i class="bi bi-upload me-1"></i> Upload Inventory
+</button>
+{% endblock %}
+
+{% block content %}
+
+<!-- KPI Cards -->
+<div class="row g-4 section-gap">
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#1565C0;--kpi-soft-color:#DBEAFE;">
+      <div class="kpi-icon"><i class="bi bi-boxes"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Total SKUs Listed</div>
+        <div class="kpi-value">2,840</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>+120 this month</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#16A34A;--kpi-soft-color:#DCFCE7;">
+      <div class="kpi-icon"><i class="bi bi-diagram-3"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Matched Requests</div>
+        <div class="kpi-value">94</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>18 this week</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#D97706;--kpi-soft-color:#FEF3C7;">
+      <div class="kpi-icon"><i class="bi bi-tags"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Active Bundles</div>
+        <div class="kpi-value">12</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>3 expire this week</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#0891B2;--kpi-soft-color:#CFFAFE;">
+      <div class="kpi-icon"><i class="bi bi-currency-rupee"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Sales (MTD)</div>
+        <div class="kpi-value">₹42.8L</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>+19.3% vs last month</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Market Trend Chart + Discount Bundle Cards -->
+<div class="row g-4 section-gap">
+
+  <!-- Market Trend Chart -->
+  <div class="col-xl-8">
+    <div class="pl-card">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-graph-up me-2 text-primary"></i>Market Demand Trends</h6>
+        <div class="d-flex gap-2">
+          <select class="form-select form-select-sm" style="width:auto;">
+            <option>All Categories</option>
+            <option>Fasteners</option>
+            <option>Sheet Metal</option>
+            <option>Castings</option>
+            <option>Plastics</option>
+          </select>
+          <select class="form-select form-select-sm" style="width:auto;">
+            <option>Last 12 Months</option>
+            <option>Last 6 Months</option>
+            <option>This Quarter</option>
+          </select>
+        </div>
+      </div>
+      <div class="card-body-custom">
+        <div class="chart-container" style="height:280px;">
+          <canvas id="marketTrendChart"></canvas>
+        </div>
+        <!-- Trend Insights -->
+        <div class="row g-3 mt-3">
+          <div class="col-md-4">
+            <div class="p-3 rounded" style="background:var(--pl-success-soft);border:1px solid rgba(22,163,74,0.2);">
+              <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--pl-success);font-weight:700;">Trending Up</div>
+              <div style="font-size:14px;font-weight:700;margin-top:4px;">Fasteners</div>
+              <div style="font-size:12px;color:var(--pl-text-muted);">+32% demand surge</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 rounded" style="background:var(--pl-warning-soft);border:1px solid rgba(217,119,6,0.2);">
+              <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--pl-warning);font-weight:700;">Stable</div>
+              <div style="font-size:14px;font-weight:700;margin-top:4px;">Sheet Metal</div>
+              <div style="font-size:12px;color:var(--pl-text-muted);">±5% variation</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 rounded" style="background:var(--pl-danger-soft);border:1px solid rgba(220,38,38,0.2);">
+              <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--pl-danger);font-weight:700;">Declining</div>
+              <div style="font-size:14px;font-weight:700;margin-top:4px;">Castings</div>
+              <div style="font-size:12px;color:var(--pl-text-muted);">-12% this quarter</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Discount Bundle Cards -->
+  <div class="col-xl-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h6 class="fw-bold mb-0"><i class="bi bi-tags me-2 text-primary"></i>Discount Bundles</h6>
+      <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#createBundleModal">
+        <i class="bi bi-plus me-1"></i>New Bundle
+      </button>
+    </div>
+
+    <!-- Bundle Card 1 -->
+    <div class="pl-card mb-3">
+      <div class="card-body-custom">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <div class="fw-bold" style="font-size:14px;">Fastener Megapack</div>
+          <span class="badge" style="background:rgba(220,38,38,0.12);color:var(--pl-danger);font-size:12px;font-weight:700;">-18% OFF</span>
+        </div>
+        <div class="text-muted mb-3" style="font-size:12.5px;">M8, M10, M12 bolts + washers + hex nuts – Mixed pack 5,000 units+</div>
+        <div class="row g-2 mb-3" style="font-size:12px;">
+          <div class="col-6"><span class="text-muted">Original:</span> <span style="text-decoration:line-through;">₹1,25,000</span></div>
+          <div class="col-6"><span class="text-muted">Bundle Price:</span> <strong class="text-success">₹1,02,500</strong></div>
+          <div class="col-6"><span class="text-muted">Units Sold:</span> 48 bundles</div>
+          <div class="col-6"><span class="text-muted">Expires:</span> 05 Apr 2025</div>
+        </div>
+        <div class="progress mb-2" style="height:4px;border-radius:2px;">
+          <div class="progress-bar bg-danger" style="width:72%;"></div>
+        </div>
+        <div class="d-flex justify-content-between" style="font-size:11px;color:var(--pl-text-muted);">
+          <span>72% of stock allocated</span>
+          <button class="btn btn-link btn-sm p-0 text-danger" style="font-size:11px;">End Bundle</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bundle Card 2 -->
+    <div class="pl-card mb-3">
+      <div class="card-body-custom">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <div class="fw-bold" style="font-size:14px;">Sheet Metal Starter Kit</div>
+          <span class="badge" style="background:rgba(21,101,192,0.12);color:var(--pl-primary);font-size:12px;font-weight:700;">-12% OFF</span>
+        </div>
+        <div class="text-muted mb-3" style="font-size:12.5px;">All gauges: 1mm, 2mm, 3mm – 100 sheets of each</div>
+        <div class="row g-2 mb-3" style="font-size:12px;">
+          <div class="col-6"><span class="text-muted">Bundle Price:</span> <strong class="text-success">₹44,000</strong></div>
+          <div class="col-6"><span class="text-muted">Expires:</span> 10 Apr 2025</div>
+        </div>
+        <div class="progress mb-2" style="height:4px;border-radius:2px;">
+          <div class="progress-bar bg-primary" style="width:35%;"></div>
+        </div>
+        <div class="d-flex justify-content-between" style="font-size:11px;color:var(--pl-text-muted);">
+          <span>35% of stock allocated</span>
+          <button class="btn btn-link btn-sm p-0 text-danger" style="font-size:11px;">End Bundle</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bundle Card 3 -->
+    <div class="pl-card">
+      <div class="card-body-custom">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <div class="fw-bold" style="font-size:14px;">Rubber Seals Combo</div>
+          <span class="badge" style="background:rgba(22,163,74,0.12);color:var(--pl-success);font-size:12px;font-weight:700;">-10% OFF</span>
+        </div>
+        <div class="text-muted mb-2" style="font-size:12.5px;">O-rings + Gaskets – Assorted 10,000 unit lot</div>
+        <div class="row g-2" style="font-size:12px;">
+          <div class="col-6"><span class="text-muted">Bundle Price:</span> <strong class="text-success">₹27,000</strong></div>
+          <div class="col-6"><span class="text-muted">Expires:</span> 20 Apr 2025</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Inventory Upload UI + Matching Requests -->
+<div class="row g-4 section-gap">
+
+  <!-- Inventory Upload -->
+  <div class="col-xl-5">
+    <div class="pl-card">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-upload me-2 text-primary"></i>Bulk Inventory Upload</h6>
+      </div>
+      <div class="card-body-custom">
+        <div class="upload-zone mb-3">
+          <input type="file" class="d-none" id="inventoryFile" accept=".csv,.xlsx,.xls">
+          <i class="bi bi-file-spreadsheet upload-icon"></i>
+          <h6 class="fw-semibold mt-2 mb-1">Upload Inventory Sheet</h6>
+          <p class="text-muted mb-3" style="font-size:13px;">CSV or Excel format – one SKU per row</p>
+          <div class="file-list" id="inventoryFileList"></div>
+        </div>
+
+        <!-- Template Download -->
+        <div class="d-flex align-items-center gap-2 p-2 rounded mb-3" style="background:var(--pl-bg);border:1px solid var(--pl-border);">
+          <i class="bi bi-file-earmark-excel text-success fs-4"></i>
+          <div class="flex-1">
+            <div class="fw-medium" style="font-size:13px;">Download Template</div>
+            <div style="font-size:11px;color:var(--pl-text-muted);">Use our standard Excel template</div>
+          </div>
+          <a href="#" class="btn btn-sm btn-outline-success">
+            <i class="bi bi-download me-1"></i>Download
+          </a>
+        </div>
+
+        <!-- Field Mapping Preview -->
+        <div class="mb-3">
+          <div style="font-size:12px;font-weight:600;color:var(--pl-text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Required Columns</div>
+          <div class="row g-1">
+            <div class="col-auto"><span class="badge bg-light border text-dark">SKU</span></div>
+            <div class="col-auto"><span class="badge bg-light border text-dark">Part Name</span></div>
+            <div class="col-auto"><span class="badge bg-light border text-dark">Category</span></div>
+            <div class="col-auto"><span class="badge bg-light border text-dark">Qty</span></div>
+            <div class="col-auto"><span class="badge bg-light border text-dark">Unit Price (₹)</span></div>
+            <div class="col-auto"><span class="badge bg-light border text-dark">Unit</span></div>
+          </div>
+        </div>
+        <button class="btn-pl-primary w-100 justify-content-center">
+          <i class="bi bi-upload me-1"></i> Process & Upload
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Matching Requests Panel -->
+  <div class="col-xl-7">
+    <div class="pl-card">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-diagram-3 me-2 text-primary"></i>Matching Requests</h6>
+        <span class="status-badge status-active">94 Matches Found</span>
+      </div>
+      <div class="card-body-custom p-0">
+        <div class="table-responsive">
+          <table class="pl-table mb-0">
+            <thead>
+              <tr>
+                <th>Buyer</th>
+                <th>Part Required</th>
+                <th>Qty</th>
+                <th>Budget</th>
+                <th>Your Match</th>
+                <th>Match Score</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="user-chip">
+                    <div class="avatar-sm">HM</div>
+                    <span style="font-size:13px;">Hero MotoCorp</span>
+                  </div>
+                </td>
+                <td style="font-size:12.5px;">Steel Bolt M12 × 3,000</td>
+                <td>3,000</td>
+                <td>₹30/unit</td>
+                <td>
+                  <div style="font-size:12px;">PL-1082 – Bolt M12<br><span class="text-muted">Your price: ₹27.50</span></div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center gap-1">
+                    <div class="progress flex-1" style="height:6px;border-radius:3px;min-width:60px;">
+                      <div class="progress-bar bg-success" style="width:96%;"></div>
+                    </div>
+                    <span style="font-size:12px;font-weight:700;color:var(--pl-success);">96%</span>
+                  </div>
+                </td>
+                <td>
+                  <button class="btn-approve"><i class="bi bi-send me-1"></i>Offer</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="user-chip">
+                    <div class="avatar-sm" style="background:linear-gradient(135deg,#D97706,#FCD34D);">TV</div>
+                    <span style="font-size:13px;">TVS Motors</span>
+                  </div>
+                </td>
+                <td style="font-size:12.5px;">Rubber O-Ring 50mm × 8,000</td>
+                <td>8,000</td>
+                <td>₹9/unit</td>
+                <td>
+                  <div style="font-size:12px;">PL-1125 – O-Ring 50mm<br><span class="text-muted">Your price: ₹8.75</span></div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center gap-1">
+                    <div class="progress flex-1" style="height:6px;border-radius:3px;min-width:60px;">
+                      <div class="progress-bar bg-success" style="width:90%;"></div>
+                    </div>
+                    <span style="font-size:12px;font-weight:700;color:var(--pl-success);">90%</span>
+                  </div>
+                </td>
+                <td>
+                  <button class="btn-approve"><i class="bi bi-send me-1"></i>Offer</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="user-chip">
+                    <div class="avatar-sm" style="background:linear-gradient(135deg,#0891B2,#22D3EE);">AS</div>
+                    <span style="font-size:13px;">Ashok Leyland</span>
+                  </div>
+                </td>
+                <td style="font-size:12.5px;">Aluminium Sheet 2mm × 500</td>
+                <td>500</td>
+                <td>₹160/pc</td>
+                <td>
+                  <div style="font-size:12px;">PL-1091 – Al Sheet 2mm<br><span class="text-muted">Your price: ₹145.00</span></div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center gap-1">
+                    <div class="progress flex-1" style="height:6px;border-radius:3px;min-width:60px;">
+                      <div class="progress-bar" style="width:82%;background:var(--pl-warning);"></div>
+                    </div>
+                    <span style="font-size:12px;font-weight:700;color:var(--pl-warning);">82%</span>
+                  </div>
+                </td>
+                <td>
+                  <button class="btn-approve"><i class="bi bi-send me-1"></i>Offer</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="user-chip">
+                    <div class="avatar-sm" style="background:linear-gradient(135deg,#7C3AED,#A78BFA);">MH</div>
+                    <span style="font-size:13px;">Mahindra</span>
+                  </div>
+                </td>
+                <td style="font-size:12.5px;">SS Spring Washer M8 × 12,000</td>
+                <td>12,000</td>
+                <td>₹7/unit</td>
+                <td>
+                  <div style="font-size:12px;">PL-1133 – Washer M8<br><span class="text-muted">Your price: ₹6.50</span></div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center gap-1">
+                    <div class="progress flex-1" style="height:6px;border-radius:3px;min-width:60px;">
+                      <div class="progress-bar bg-success" style="width:88%;"></div>
+                    </div>
+                    <span style="font-size:12px;font-weight:700;color:var(--pl-success);">88%</span>
+                  </div>
+                </td>
+                <td>
+                  <button class="btn-approve"><i class="bi bi-send me-1"></i>Offer</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="p-3 text-center border-top">
+          <a href="/distributor/matching" class="text-primary small fw-medium">View all 94 matching requests →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Upload Inventory Modal -->
+<div class="modal fade" id="uploadInventoryModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-upload me-2 text-primary"></i>Upload Inventory</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="upload-zone mb-3">
+          <input type="file" class="d-none" accept=".csv,.xlsx">
+          <i class="bi bi-file-spreadsheet upload-icon"></i>
+          <h6>Drop your inventory file here</h6>
+          <p class="text-muted small">CSV or Excel (.xlsx) format</p>
+          <div class="file-list"></div>
+        </div>
+        <div class="alert alert-info">
+          <i class="bi bi-info-circle me-2"></i>
+          <strong>Tip:</strong> Use our Excel template to avoid upload errors.
+          <a href="#" class="alert-link ms-1">Download Template →</a>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pl-primary"><i class="bi bi-upload me-1"></i>Upload</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create Bundle Modal -->
+<div class="modal fade" id="createBundleModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-tags me-2 text-primary"></i>Create Discount Bundle</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Bundle Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" placeholder="e.g. Summer Fastener Megapack">
+            </div>
+            <div class="col-12">
+              <label class="form-label">Select SKUs to Include</label>
+              <select class="form-select" multiple style="height:100px;">
+                <option>PL-1082 – Steel Bolt M12</option>
+                <option>PL-1104 – Hex Nut M10</option>
+                <option>PL-1133 – Spring Washer M8</option>
+                <option>PL-1125 – Rubber O-Ring 50mm</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Discount % <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input type="number" class="form-control" placeholder="e.g. 15" min="1" max="50">
+                <span class="input-group-text">%</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Bundle Expiry <span class="text-danger">*</span></label>
+              <input type="date" class="form-control">
+            </div>
+            <div class="col-12">
+              <label class="form-label">Terms & Conditions</label>
+              <textarea class="form-control" rows="2" placeholder="Minimum order qty, region, etc."></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pl-primary"><i class="bi bi-plus me-1"></i>Create Bundle</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+createLineChart('marketTrendChart', {
+  labels: ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],
+  datasets: [
+    {
+      label: 'Fasteners',
+      data: [820, 890, 940, 870, 1020, 1180, 1090, 1340, 1420, 1210, 1580, 1760],
+      color: '#1565C0',
+      fill: 'rgba(21,101,192,0.06)'
+    },
+    {
+      label: 'Sheet Metal',
+      data: [680, 710, 740, 720, 750, 760, 740, 780, 800, 760, 810, 830],
+      color: '#D97706',
+      fill: 'rgba(217,119,6,0.05)'
+    },
+    {
+      label: 'Castings',
+      data: [520, 490, 460, 448, 430, 415, 408, 390, 380, 370, 355, 340],
+      color: '#DC2626',
+      fill: 'rgba(220,38,38,0.04)'
+    }
+  ]
+});
+</script>
+{% endblock %}

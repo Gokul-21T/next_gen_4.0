@@ -1,0 +1,326 @@
+<!-- ============================================================
+     SIDEBAR – PartLink (Role-Based Dynamic Menu)
+     Included in: base.html
+     
+     Django backend: pass {{ user_role }} context variable
+     Roles: 'admin' | 'manufacturer' | 'supplier' | 'logistics' | 'designer' | 'distributor'
+============================================================ -->
+<aside class="sidebar" id="sidebar">
+
+  <!-- Brand Logo -->
+  <div class="sidebar-brand">
+    <div class="brand-logo">
+      <i class="bi bi-link-45deg"></i>
+    </div>
+    <div class="brand-text">
+      <span class="brand-name">PartLink</span>
+      <span class="brand-tagline">B2B Platform</span>
+    </div>
+    <button class="sidebar-close-btn d-lg-none" id="sidebarClose">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+
+  <!-- Role Badge -->
+  <div class="role-badge-wrapper px-3 pb-3">
+    <div class="role-badge">
+      <!-- Replace with {{ user_role|title }} in Django -->
+      <i class="bi bi-shield-fill-check me-1"></i>
+      <span id="currentRole">Admin</span>
+    </div>
+  </div>
+
+  <!-- Navigation Menu -->
+  <nav class="sidebar-nav" id="sidebarNav">
+
+    <!-- ======== ADMIN MENU ======== -->
+    <!-- {% if user_role == 'admin' %} -->
+    <div class="nav-section" data-role="admin">
+      <div class="nav-section-title">Main</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="/admin/dashboard" class="nav-link active" data-page="admin-dashboard">
+            <span class="nav-icon"><i class="bi bi-speedometer2"></i></span>
+            <span class="nav-label">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/admin/users" class="nav-link" data-page="admin-users">
+            <span class="nav-icon"><i class="bi bi-people"></i></span>
+            <span class="nav-label">User Management</span>
+            <span class="nav-badge">12</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/admin/approvals" class="nav-link" data-page="admin-approvals">
+            <span class="nav-icon"><i class="bi bi-person-check"></i></span>
+            <span class="nav-label">Approvals</span>
+            <span class="nav-badge urgent">5</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="nav-section-title">Operations</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="/admin/orders" class="nav-link" data-page="admin-orders">
+            <span class="nav-icon"><i class="bi bi-bag-check"></i></span>
+            <span class="nav-label">Orders</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/admin/reports" class="nav-link" data-page="admin-reports">
+            <span class="nav-icon"><i class="bi bi-flag"></i></span>
+            <span class="nav-label">Reports & Flags</span>
+            <span class="nav-badge urgent">3</span>
+          </a>
+        </li>
+        <li class="nav-item has-submenu">
+          <a href="#analyticsMenu" class="nav-link" data-bs-toggle="collapse">
+            <span class="nav-icon"><i class="bi bi-bar-chart-line"></i></span>
+            <span class="nav-label">Analytics</span>
+            <i class="bi bi-chevron-down nav-arrow ms-auto"></i>
+          </a>
+          <ul class="nav-submenu collapse" id="analyticsMenu">
+            <li><a href="/admin/analytics/revenue" class="nav-link sub">Revenue</a></li>
+            <li><a href="/admin/analytics/users" class="nav-link sub">User Growth</a></li>
+            <li><a href="/admin/analytics/orders" class="nav-link sub">Order Trends</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a href="/admin/system" class="nav-link" data-page="admin-system">
+            <span class="nav-icon"><i class="bi bi-display"></i></span>
+            <span class="nav-label">System Status</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/admin/settings" class="nav-link" data-page="admin-settings">
+            <span class="nav-icon"><i class="bi bi-gear"></i></span>
+            <span class="nav-label">Settings</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- {% endif %} -->
+
+    <!-- ======== MANUFACTURER / BUYER MENU ======== -->
+    <!-- {% if user_role == 'manufacturer' %} -->
+    <div class="nav-section d-none" data-role="manufacturer">
+      <div class="nav-section-title">Main</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="/manufacturer/dashboard" class="nav-link" data-page="mfr-dashboard">
+            <span class="nav-icon"><i class="bi bi-speedometer2"></i></span>
+            <span class="nav-label">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/manufacturer/rfq" class="nav-link" data-page="mfr-rfq">
+            <span class="nav-icon"><i class="bi bi-file-earmark-plus"></i></span>
+            <span class="nav-label">Submit RFQ</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/manufacturer/quotes" class="nav-link" data-page="mfr-quotes">
+            <span class="nav-icon"><i class="bi bi-receipt"></i></span>
+            <span class="nav-label">Compare Quotes</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/manufacturer/orders" class="nav-link" data-page="mfr-orders">
+            <span class="nav-icon"><i class="bi bi-bag-check"></i></span>
+            <span class="nav-label">My Orders</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/manufacturer/suppliers" class="nav-link" data-page="mfr-suppliers">
+            <span class="nav-icon"><i class="bi bi-building"></i></span>
+            <span class="nav-label">Suppliers</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/manufacturer/forecast" class="nav-link" data-page="mfr-forecast">
+            <span class="nav-icon"><i class="bi bi-graph-up-arrow"></i></span>
+            <span class="nav-label">Demand Forecast</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- {% endif %} -->
+
+    <!-- ======== SUPPLIER MENU ======== -->
+    <!-- {% if user_role == 'supplier' %} -->
+    <div class="nav-section d-none" data-role="supplier">
+      <div class="nav-section-title">Main</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="/supplier/dashboard" class="nav-link" data-page="sup-dashboard">
+            <span class="nav-icon"><i class="bi bi-speedometer2"></i></span>
+            <span class="nav-label">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/supplier/inventory" class="nav-link" data-page="sup-inventory">
+            <span class="nav-icon"><i class="bi bi-boxes"></i></span>
+            <span class="nav-label">Inventory</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/supplier/rfq-inbox" class="nav-link" data-page="sup-rfq">
+            <span class="nav-icon"><i class="bi bi-inbox"></i></span>
+            <span class="nav-label">RFQ Inbox</span>
+            <span class="nav-badge urgent">7</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/supplier/quotes" class="nav-link" data-page="sup-quotes">
+            <span class="nav-icon"><i class="bi bi-send"></i></span>
+            <span class="nav-label">My Quotes</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/supplier/revenue" class="nav-link" data-page="sup-revenue">
+            <span class="nav-icon"><i class="bi bi-currency-rupee"></i></span>
+            <span class="nav-label">Revenue</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/supplier/feedback" class="nav-link" data-page="sup-feedback">
+            <span class="nav-icon"><i class="bi bi-star"></i></span>
+            <span class="nav-label">Ratings</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- {% endif %} -->
+
+    <!-- ======== LOGISTICS MENU ======== -->
+    <!-- {% if user_role == 'logistics' %} -->
+    <div class="nav-section d-none" data-role="logistics">
+      <div class="nav-section-title">Main</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="/logistics/dashboard" class="nav-link" data-page="log-dashboard">
+            <span class="nav-icon"><i class="bi bi-speedometer2"></i></span>
+            <span class="nav-label">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/logistics/shipments" class="nav-link" data-page="log-shipments">
+            <span class="nav-icon"><i class="bi bi-truck"></i></span>
+            <span class="nav-label">Shipments</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/logistics/tracking" class="nav-link" data-page="log-tracking">
+            <span class="nav-icon"><i class="bi bi-geo-alt"></i></span>
+            <span class="nav-label">Tracking</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/logistics/notifications" class="nav-link" data-page="log-notif">
+            <span class="nav-icon"><i class="bi bi-bell"></i></span>
+            <span class="nav-label">Notifications</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- {% endif %} -->
+
+    <!-- ======== DESIGNER MENU ======== -->
+    <!-- {% if user_role == 'designer' %} -->
+    <div class="nav-section d-none" data-role="designer">
+      <div class="nav-section-title">Main</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="/designer/dashboard" class="nav-link" data-page="des-dashboard">
+            <span class="nav-icon"><i class="bi bi-speedometer2"></i></span>
+            <span class="nav-label">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/designer/upload" class="nav-link" data-page="des-upload">
+            <span class="nav-icon"><i class="bi bi-cloud-upload"></i></span>
+            <span class="nav-label">Upload Files</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/designer/projects" class="nav-link" data-page="des-projects">
+            <span class="nav-icon"><i class="bi bi-folder2-open"></i></span>
+            <span class="nav-label">Projects</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/designer/versions" class="nav-link" data-page="des-versions">
+            <span class="nav-icon"><i class="bi bi-clock-history"></i></span>
+            <span class="nav-label">Version History</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/designer/chat" class="nav-link" data-page="des-chat">
+            <span class="nav-icon"><i class="bi bi-chat-dots"></i></span>
+            <span class="nav-label">Chat</span>
+            <span class="nav-badge bg-success">2</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- {% endif %} -->
+
+    <!-- ======== DISTRIBUTOR MENU ======== -->
+    <!-- {% if user_role == 'distributor' %} -->
+    <div class="nav-section d-none" data-role="distributor">
+      <div class="nav-section-title">Main</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="/distributor/dashboard" class="nav-link" data-page="dist-dashboard">
+            <span class="nav-icon"><i class="bi bi-speedometer2"></i></span>
+            <span class="nav-label">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/distributor/inventory" class="nav-link" data-page="dist-inventory">
+            <span class="nav-icon"><i class="bi bi-upload"></i></span>
+            <span class="nav-label">Inventory Upload</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/distributor/trends" class="nav-link" data-page="dist-trends">
+            <span class="nav-icon"><i class="bi bi-graph-up"></i></span>
+            <span class="nav-label">Market Trends</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/distributor/bundles" class="nav-link" data-page="dist-bundles">
+            <span class="nav-icon"><i class="bi bi-tags"></i></span>
+            <span class="nav-label">Discount Bundles</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/distributor/matching" class="nav-link" data-page="dist-matching">
+            <span class="nav-icon"><i class="bi bi-diagram-3"></i></span>
+            <span class="nav-label">Matching Requests</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- {% endif %} -->
+
+  </nav><!-- /sidebar-nav -->
+
+  <!-- Sidebar Bottom: Help & Support -->
+  <div class="sidebar-bottom">
+    <a href="#" class="sidebar-bottom-link">
+      <i class="bi bi-question-circle me-2"></i>
+      <span>Help & Support</span>
+    </a>
+    <a href="#" class="sidebar-bottom-link">
+      <i class="bi bi-book me-2"></i>
+      <span>Documentation</span>
+    </a>
+  </div>
+
+</aside>
+
+<!-- Mobile Sidebar Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>

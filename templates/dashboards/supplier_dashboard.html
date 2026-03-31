@@ -1,0 +1,503 @@
+{% extends "base.html" %}
+
+{% block title %}Supplier Dashboard – PartLink{% endblock %}
+{% block page_title %}Supplier Dashboard{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="#">Home</a></li>
+<li class="breadcrumb-item active">Supplier Dashboard</li>
+{% endblock %}
+
+{% block page_actions %}
+<button class="btn-pl-primary" data-bs-toggle="modal" data-bs-target="#addInventoryModal">
+  <i class="bi bi-plus-lg me-1"></i> Add Inventory
+</button>
+{% endblock %}
+
+{% block content %}
+
+<!-- KPI Cards -->
+<div class="row g-4 section-gap">
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#1565C0;--kpi-soft-color:#DBEAFE;">
+      <div class="kpi-icon"><i class="bi bi-inbox"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Open RFQs</div>
+        <div class="kpi-value">23</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>7 new today</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#16A34A;--kpi-soft-color:#DCFCE7;">
+      <div class="kpi-icon"><i class="bi bi-currency-rupee"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Revenue (MTD)</div>
+        <div class="kpi-value">₹18.2L</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>14.2% this month</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#D97706;--kpi-soft-color:#FEF3C7;">
+      <div class="kpi-icon"><i class="bi bi-boxes"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">SKUs in Stock</div>
+        <div class="kpi-value">184</div>
+        <div class="kpi-delta negative"><i class="bi bi-arrow-down-short"></i>8 low stock alerts</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#0891B2;--kpi-soft-color:#CFFAFE;">
+      <div class="kpi-icon"><i class="bi bi-star-fill"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Avg Rating</div>
+        <div class="kpi-value">4.7</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>+0.2 this quarter</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Inventory Table + Revenue Chart -->
+<div class="row g-4 section-gap">
+
+  <!-- Inventory Table -->
+  <div class="col-xl-7">
+    <div class="pl-table-wrapper">
+      <div class="pl-table-toolbar">
+        <h6 class="mb-0 fw-bold"><i class="bi bi-boxes me-2 text-primary"></i>Inventory</h6>
+        <div class="ms-auto d-flex gap-2">
+          <input type="text" class="form-control form-control-sm" placeholder="Search inventory..." style="width:180px;" data-table-search="inventoryTable">
+          <select class="form-select form-select-sm" style="width:auto;">
+            <option>All Status</option>
+            <option>In Stock</option>
+            <option>Low Stock</option>
+            <option>Out of Stock</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="pl-table" id="inventoryTable">
+          <thead>
+            <tr>
+              <th data-sort="sku">SKU</th>
+              <th data-sort="name">Part Name <i class="bi bi-arrow-down-up sort-icon"></i></th>
+              <th data-sort="qty">Qty <i class="bi bi-arrow-down-up sort-icon"></i></th>
+              <th>Unit</th>
+              <th data-sort="price">Price (₹)</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span style="font-family:monospace;font-size:12px;">PL-1082</span></td>
+              <td>Steel Bolt M12 × 40mm</td>
+              <td>12,400</td>
+              <td>pcs</td>
+              <td>₹28.50</td>
+              <td><span class="status-badge status-active">In Stock</span></td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editInventoryModal" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td><span style="font-family:monospace;font-size:12px;">PL-1091</span></td>
+              <td>Aluminium Sheet 2mm</td>
+              <td>320</td>
+              <td>pcs</td>
+              <td>₹145.00</td>
+              <td><span class="status-badge status-active">In Stock</span></td>
+              <td><button class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></button></td>
+            </tr>
+            <tr>
+              <td><span style="font-family:monospace;font-size:12px;">PL-1104</span></td>
+              <td>Hex Nut M10 SS304</td>
+              <td>85</td>
+              <td>pcs</td>
+              <td>₹12.00</td>
+              <td><span class="status-badge status-pending">Low Stock</span></td>
+              <td><button class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></button></td>
+            </tr>
+            <tr>
+              <td><span style="font-family:monospace;font-size:12px;">PL-1118</span></td>
+              <td>CNC Machined Shaft D20</td>
+              <td>0</td>
+              <td>pcs</td>
+              <td>₹2,400.00</td>
+              <td><span class="status-badge status-rejected">Out of Stock</span></td>
+              <td><button class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></button></td>
+            </tr>
+            <tr>
+              <td><span style="font-family:monospace;font-size:12px;">PL-1125</span></td>
+              <td>Rubber O-Ring 50mm</td>
+              <td>6,800</td>
+              <td>pcs</td>
+              <td>₹8.75</td>
+              <td><span class="status-badge status-active">In Stock</span></td>
+              <td><button class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></button></td>
+            </tr>
+            <tr>
+              <td><span style="font-family:monospace;font-size:12px;">PL-1133</span></td>
+              <td>Stainless Spring Washer M8</td>
+              <td>150</td>
+              <td>pcs</td>
+              <td>₹6.50</td>
+              <td><span class="status-badge status-pending">Low Stock</span></td>
+              <td><button class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revenue Chart -->
+  <div class="col-xl-5">
+    <div class="pl-card h-100">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-graph-up me-2 text-primary"></i>Revenue Trend</h6>
+        <select class="form-select form-select-sm" style="width:auto;">
+          <option>This Year</option>
+          <option>Last Year</option>
+          <option>Last 6 Months</option>
+        </select>
+      </div>
+      <div class="card-body-custom">
+        <div class="chart-container" style="height:220px;">
+          <canvas id="supplierRevenueChart"></canvas>
+        </div>
+        <!-- Revenue Summary -->
+        <div class="row g-2 mt-3">
+          <div class="col-4">
+            <div class="p-2 rounded text-center" style="background:var(--pl-bg);border:1px solid var(--pl-border);">
+              <div style="font-size:11px;color:var(--pl-text-muted);">This Month</div>
+              <div style="font-size:15px;font-weight:700;color:var(--pl-primary);">₹18.2L</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="p-2 rounded text-center" style="background:var(--pl-bg);border:1px solid var(--pl-border);">
+              <div style="font-size:11px;color:var(--pl-text-muted);">Last Month</div>
+              <div style="font-size:15px;font-weight:700;color:var(--pl-text);">₹15.9L</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="p-2 rounded text-center" style="background:var(--pl-success-soft);border:1px solid rgba(22,163,74,0.2);">
+              <div style="font-size:11px;color:var(--pl-text-muted);">Growth</div>
+              <div style="font-size:15px;font-weight:700;color:var(--pl-success);">+14.2%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- RFQ Inbox + Feedback -->
+<div class="row g-4 section-gap">
+
+  <!-- RFQ Inbox Panel -->
+  <div class="col-xl-7">
+    <div class="pl-card">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-inbox me-2 text-primary"></i>RFQ Inbox</h6>
+        <span class="status-badge status-pending">23 Open</span>
+      </div>
+      <div class="card-body-custom p-0">
+        {% for rfq in rfq_inbox %}{% empty %}
+        <!-- Static RFQ items for UI preview -->
+        <div class="rfq-item border-bottom p-3" style="cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='var(--pl-bg)'" onmouseout="this.style.background=''">
+          <div class="d-flex align-items-start justify-content-between">
+            <div class="d-flex gap-3">
+              <div class="avatar-sm mt-1" style="background:linear-gradient(135deg,#1565C0,#42A5F5);">TM</div>
+              <div>
+                <div class="fw-semibold" style="font-size:13.5px;">Tata Motors Ltd.</div>
+                <div style="font-size:12px;color:var(--pl-text-muted);">Steel Bolt M12 × 2,000 units • By 10 Apr 2025</div>
+                <div class="mt-1">
+                  <span class="badge bg-light border text-dark me-1" style="font-size:10px;">ISO 9001 Required</span>
+                  <span class="badge bg-light border text-dark" style="font-size:10px;">₹25/unit budget</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-end">
+              <div style="font-size:11px;color:var(--pl-text-muted);">2h ago</div>
+              <button class="btn-pl-primary mt-2" style="font-size:11px;padding:5px 12px;" data-bs-toggle="modal" data-bs-target="#quoteModal">
+                <i class="bi bi-send me-1"></i>Quote
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="rfq-item border-bottom p-3" style="cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='var(--pl-bg)'" onmouseout="this.style.background=''">
+          <div class="d-flex align-items-start justify-content-between">
+            <div class="d-flex gap-3">
+              <div class="avatar-sm mt-1" style="background:linear-gradient(135deg,#D97706,#FCD34D);">BA</div>
+              <div>
+                <div class="fw-semibold" style="font-size:13.5px;">Bajaj Auto Ltd.</div>
+                <div style="font-size:12px;color:var(--pl-text-muted);">Hex Nut M10 SS304 × 5,000 units • By 15 Apr 2025</div>
+                <div class="mt-1">
+                  <span class="badge bg-light border text-dark me-1" style="font-size:10px;">BIS Certified</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-end">
+              <div style="font-size:11px;color:var(--pl-text-muted);">5h ago</div>
+              <button class="btn-pl-primary mt-2" style="font-size:11px;padding:5px 12px;" data-bs-toggle="modal" data-bs-target="#quoteModal">
+                <i class="bi bi-send me-1"></i>Quote
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="rfq-item p-3" style="cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='var(--pl-bg)'" onmouseout="this.style.background=''">
+          <div class="d-flex align-items-start justify-content-between">
+            <div class="d-flex gap-3">
+              <div class="avatar-sm mt-1" style="background:linear-gradient(135deg,#16A34A,#4ADE80);">MS</div>
+              <div>
+                <div class="fw-semibold" style="font-size:13.5px;">Maruti Suzuki India</div>
+                <div style="font-size:12px;color:var(--pl-text-muted);">Rubber O-Ring 50mm × 10,000 units • By 20 Apr 2025</div>
+                <div class="mt-1">
+                  <span class="badge bg-light border text-dark" style="font-size:10px;">RoHS Compliant</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-end">
+              <div style="font-size:11px;color:var(--pl-text-muted);">1d ago</div>
+              <button class="btn-pl-primary mt-2" style="font-size:11px;padding:5px 12px;" data-bs-toggle="modal" data-bs-target="#quoteModal">
+                <i class="bi bi-send me-1"></i>Quote
+              </button>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        <div class="p-3 text-center border-top">
+          <a href="/supplier/rfq-inbox" class="text-primary small fw-medium">View all 23 RFQs →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feedback & Ratings -->
+  <div class="col-xl-5">
+    <div class="pl-card h-100">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-star me-2 text-primary"></i>Feedback & Ratings</h6>
+      </div>
+      <div class="card-body-custom">
+        <!-- Overall Rating Display -->
+        <div class="text-center mb-4">
+          <div style="font-size:52px;font-weight:800;color:var(--pl-text);">4.7</div>
+          <div class="star-rating fs-4">★★★★★</div>
+          <div style="font-size:12px;color:var(--pl-text-muted);margin-top:4px;">Based on 138 reviews</div>
+        </div>
+        <!-- Rating Breakdown Bars -->
+        <div class="rating-breakdown">
+          {% for row in rating_breakdown %}{% empty %}
+          <div class="d-flex align-items-center gap-2 mb-2" style="font-size:12.5px;">
+            <span style="width:20px;text-align:right;color:var(--pl-text-muted);">5</span>
+            <i class="bi bi-star-fill text-warning" style="font-size:11px;"></i>
+            <div class="progress flex-1" style="height:8px;border-radius:4px;">
+              <div class="progress-bar bg-warning" style="width:68%;"></div>
+            </div>
+            <span style="width:30px;color:var(--pl-text-muted);">68%</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 mb-2" style="font-size:12.5px;">
+            <span style="width:20px;text-align:right;color:var(--pl-text-muted);">4</span>
+            <i class="bi bi-star-fill text-warning" style="font-size:11px;"></i>
+            <div class="progress flex-1" style="height:8px;border-radius:4px;">
+              <div class="progress-bar bg-warning" style="width:22%;"></div>
+            </div>
+            <span style="width:30px;color:var(--pl-text-muted);">22%</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 mb-2" style="font-size:12.5px;">
+            <span style="width:20px;text-align:right;color:var(--pl-text-muted);">3</span>
+            <i class="bi bi-star-fill text-warning" style="font-size:11px;"></i>
+            <div class="progress flex-1" style="height:8px;border-radius:4px;">
+              <div class="progress-bar bg-warning" style="width:7%;"></div>
+            </div>
+            <span style="width:30px;color:var(--pl-text-muted);">7%</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 mb-2" style="font-size:12.5px;">
+            <span style="width:20px;text-align:right;color:var(--pl-text-muted);">2</span>
+            <i class="bi bi-star-fill text-warning" style="font-size:11px;"></i>
+            <div class="progress flex-1" style="height:8px;border-radius:4px;">
+              <div class="progress-bar bg-warning" style="width:2%;"></div>
+            </div>
+            <span style="width:30px;color:var(--pl-text-muted);">2%</span>
+          </div>
+          <div class="d-flex align-items-center gap-2" style="font-size:12.5px;">
+            <span style="width:20px;text-align:right;color:var(--pl-text-muted);">1</span>
+            <i class="bi bi-star-fill text-warning" style="font-size:11px;"></i>
+            <div class="progress flex-1" style="height:8px;border-radius:4px;">
+              <div class="progress-bar bg-warning" style="width:1%;"></div>
+            </div>
+            <span style="width:30px;color:var(--pl-text-muted);">1%</span>
+          </div>
+          {% endfor %}
+        </div>
+        <!-- Recent Review -->
+        <div class="divider"></div>
+        <div class="p-3 rounded" style="background:var(--pl-bg);border:1px solid var(--pl-border);">
+          <div class="d-flex justify-content-between mb-1">
+            <div class="fw-semibold" style="font-size:13px;">Tata Motors Ltd.</div>
+            <span class="star-rating" style="font-size:12px;">★★★★★</span>
+          </div>
+          <p class="mb-0" style="font-size:12.5px;color:var(--pl-text-muted);">"Excellent quality parts delivered on time. Packaging was great. Will definitely order again!"</p>
+          <div style="font-size:11px;color:var(--pl-text-light);margin-top:6px;">March 20, 2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- QUOTE SUBMISSION MODAL -->
+<div class="modal fade" id="quoteModal" tabindex="-1" aria-labelledby="quoteModalLabel">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="quoteModalLabel">
+          <i class="bi bi-send me-2 text-primary"></i>Submit Quote – RFQ from Tata Motors
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <!-- RFQ Summary -->
+        <div class="mb-4 p-3 rounded" style="background:var(--pl-primary-soft);border:1.5px solid rgba(21,101,192,0.2);">
+          <div class="row g-2" style="font-size:13px;">
+            <div class="col-md-3"><span class="text-muted">Part:</span> <strong>Steel Bolt M12</strong></div>
+            <div class="col-md-3"><span class="text-muted">Qty:</span> <strong>2,000 pcs</strong></div>
+            <div class="col-md-3"><span class="text-muted">Budget:</span> <strong>₹25/unit</strong></div>
+            <div class="col-md-3"><span class="text-muted">Required By:</span> <strong>10 Apr 2025</strong></div>
+          </div>
+        </div>
+        <form id="quoteForm">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Unit Price (₹) <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" placeholder="Price per unit" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Total Quote Value</label>
+              <input type="text" class="form-control bg-light" placeholder="Auto calculated" readonly>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Valid Until <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Delivery Time <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input type="number" class="form-control" placeholder="e.g. 7" required>
+                <select class="form-select" style="max-width:100px;">
+                  <option>Days</option>
+                  <option>Weeks</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Payment Terms</label>
+              <select class="form-select">
+                <option>30 Days Net</option>
+                <option>15 Days Net</option>
+                <option>Advance Payment</option>
+                <option>50% Advance + 50% on Delivery</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Additional Notes</label>
+              <textarea class="form-control" rows="2" placeholder="Quality certifications, packaging details, etc."></textarea>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Attach Quote Document</label>
+              <input type="file" class="form-control" accept=".pdf,.xlsx,.docx">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pl-primary">
+          <i class="bi bi-send me-1"></i> Submit Quote
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD INVENTORY MODAL -->
+<div class="modal fade" id="addInventoryModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-plus-circle me-2 text-primary"></i>Add Inventory Item</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Part Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" required placeholder="e.g. Steel Bolt M12">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">SKU / Part Number</label>
+              <input type="text" class="form-control" placeholder="Auto or manual">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Category</label>
+              <select class="form-select">
+                <option>Fasteners</option>
+                <option>Sheet Metal</option>
+                <option>Castings</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Quantity <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" required placeholder="0" min="0">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Unit</label>
+              <select class="form-select">
+                <option>pcs</option>
+                <option>kg</option>
+                <option>m</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Unit Price (₹) <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" required placeholder="0.00" step="0.01">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Min Stock Alert</label>
+              <input type="number" class="form-control" placeholder="e.g. 100">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pl-primary"><i class="bi bi-plus me-1"></i>Add Item</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+createLineChart('supplierRevenueChart', {
+  labels: ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],
+  datasets: [{
+    label: 'Revenue (₹L)',
+    data: [9.2, 10.8, 12.1, 10.4, 13.5, 14.8, 13.2, 15.9, 17.0, 14.8, 15.9, 18.2],
+    color: '#16A34A',
+    fill: 'rgba(22,163,74,0.08)'
+  }]
+});
+</script>
+{% endblock %}

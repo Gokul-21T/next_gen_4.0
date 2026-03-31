@@ -1,0 +1,3109 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  PARTLINK – DEMO PREVIEW (Static HTML, No Django Required)
+  Opens directly in browser to test the UI.
+  Uses CDN for Bootstrap, Chart.js, Bootstrap Icons.
+  Modify the "activeRole" variable below to switch dashboards.
+  ============================================================
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PartLink – B2B Industrial Platform Demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="static/css/partlink.css"/>
+</head>
+<body>
+
+<!-- ===================== SIDEBAR ===================== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo"><i class="bi bi-link-45deg"></i></div>
+    <div class="brand-text">
+      <span class="brand-name">PartLink</span>
+      <span class="brand-tagline">B2B Platform</span>
+    </div>
+    <button class="sidebar-close-btn d-lg-none" id="sidebarClose"><i class="bi bi-x-lg"></i></button>
+  </div>
+  <div class="role-badge-wrapper px-3 pb-3">
+    <div class="role-badge"><i class="bi bi-shield-fill-check me-1"></i><span id="currentRole">Admin</span></div>
+  </div>
+  <!-- Role Switcher for Demo -->
+  <div class="px-3 pb-3">
+    <select class="form-select form-select-sm" id="roleSwitcher" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);font-size:12px;">
+      <option value="admin">👤 Admin</option>
+      <option value="manufacturer">🏭 Manufacturer</option>
+      <option value="supplier">📦 Supplier</option>
+      <option value="logistics">🚚 Logistics</option>
+      <option value="designer">✏️ Designer</option>
+      <option value="distributor">🏪 Distributor</option>
+    </select>
+  </div>
+  <nav class="sidebar-nav" id="sidebarNav">
+    <!-- ===== ADMIN ===== -->
+    <div class="nav-section" data-role="admin">
+      <div class="nav-section-title">Main</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="#" class="nav-link active"><span class="nav-icon"><i class="bi bi-speedometer2"></i></span><span class="nav-label">Dashboard</span></a></li>
+        <li class="nav-item"><a href="pages/admin_users.html" class="nav-link"><span class="nav-icon"><i class="bi bi-people"></i></span><span class="nav-label">User Management</span><span class="nav-badge">12</span></a></li>
+        <li class="nav-item"><a href="pages/admin_approvals.html" class="nav-link"><span class="nav-icon"><i class="bi bi-person-check"></i></span><span class="nav-label">Approvals</span><span class="nav-badge urgent">5</span></a></li>
+        <li class="nav-item"><a href="pages/admin_roles.html" class="nav-link"><span class="nav-icon"><i class="bi bi-shield-lock"></i></span><span class="nav-label">Roles &amp; Permissions</span></a></li>
+      </ul>
+      <div class="nav-section-title">Operations</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="pages/admin_orders.html" class="nav-link"><span class="nav-icon"><i class="bi bi-bag-check"></i></span><span class="nav-label">All Orders</span></a></li>
+        <li class="nav-item"><a href="pages/admin_rfq.html" class="nav-link"><span class="nav-icon"><i class="bi bi-file-earmark-text"></i></span><span class="nav-label">RFQ Overview</span></a></li>
+        <li class="nav-item"><a href="pages/admin_reports.html" class="nav-link"><span class="nav-icon"><i class="bi bi-flag"></i></span><span class="nav-label">Reports &amp; Flags</span><span class="nav-badge urgent">3</span></a></li>
+        <li class="nav-item"><a href="pages/admin_analytics.html" class="nav-link"><span class="nav-icon"><i class="bi bi-bar-chart-line"></i></span><span class="nav-label">Analytics</span></a></li>
+        <li class="nav-item"><a href="pages/admin_revenue.html" class="nav-link"><span class="nav-icon"><i class="bi bi-cash-coin"></i></span><span class="nav-label">Revenue Dashboard</span></a></li>
+        <li class="nav-item"><a href="pages/admin_system.html" class="nav-link"><span class="nav-icon"><i class="bi bi-display"></i></span><span class="nav-label">System Status</span></a></li>
+      </ul>
+      <div class="nav-section-title">System</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="pages/admin_audit.html" class="nav-link"><span class="nav-icon"><i class="bi bi-journal-text"></i></span><span class="nav-label">Audit Logs</span></a></li>
+        <li class="nav-item"><a href="pages/admin_settings.html" class="nav-link"><span class="nav-icon"><i class="bi bi-gear"></i></span><span class="nav-label">Platform Settings</span></a></li>
+      </ul>
+    </div>
+    <!-- ===== MANUFACTURER ===== -->
+    <div class="nav-section d-none" data-role="manufacturer">
+      <div class="nav-section-title">Procurement</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="#" class="nav-link active"><span class="nav-icon"><i class="bi bi-speedometer2"></i></span><span class="nav-label">Dashboard</span></a></li>
+        <li class="nav-item"><a href="pages/mfg_search.html" class="nav-link"><span class="nav-icon"><i class="bi bi-search"></i></span><span class="nav-label">Search Parts</span></a></li>
+        <li class="nav-item"><a href="pages/mfg_rfq.html" class="nav-link"><span class="nav-icon"><i class="bi bi-file-earmark-plus"></i></span><span class="nav-label">Submit RFQ</span></a></li>
+        <li class="nav-item"><a href="pages/mfg_quotes.html" class="nav-link"><span class="nav-icon"><i class="bi bi-receipt"></i></span><span class="nav-label">Compare Quotes</span><span class="nav-badge">4</span></a></li>
+      </ul>
+      <div class="nav-section-title">Orders &amp; Delivery</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="pages/mfg_orders.html" class="nav-link"><span class="nav-icon"><i class="bi bi-bag-check"></i></span><span class="nav-label">My Orders</span></a></li>
+        <li class="nav-item"><a href="pages/mfg_tracking.html" class="nav-link"><span class="nav-icon"><i class="bi bi-truck"></i></span><span class="nav-label">Track Deliveries</span></a></li>
+        <li class="nav-item"><a href="pages/mfg_returns.html" class="nav-link"><span class="nav-icon"><i class="bi bi-arrow-return-left"></i></span><span class="nav-label">Returns &amp; Disputes</span></a></li>
+      </ul>
+      <div class="nav-section-title">Intelligence</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="pages/mfg_forecast.html" class="nav-link"><span class="nav-icon"><i class="bi bi-graph-up-arrow"></i></span><span class="nav-label">Demand Forecast</span></a></li>
+        <li class="nav-item"><a href="pages/mfg_suppliers.html" class="nav-link"><span class="nav-icon"><i class="bi bi-building"></i></span><span class="nav-label">Supplier Directory</span></a></li>
+        <li class="nav-item"><a href="pages/mfg_settings.html" class="nav-link"><span class="nav-icon"><i class="bi bi-gear"></i></span><span class="nav-label">Settings</span></a></li>
+      </ul>
+    </div>
+    <!-- ===== SUPPLIER ===== -->
+    <div class="nav-section d-none" data-role="supplier">
+      <div class="nav-section-title">Inventory</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="#" class="nav-link active"><span class="nav-icon"><i class="bi bi-speedometer2"></i></span><span class="nav-label">Dashboard</span></a></li>
+        <li class="nav-item"><a href="pages/supplier_inventory.html" class="nav-link"><span class="nav-icon"><i class="bi bi-boxes"></i></span><span class="nav-label">Manage Inventory</span></a></li>
+        <li class="nav-item"><a href="pages/supplier_add_part.html" class="nav-link"><span class="nav-icon"><i class="bi bi-plus-square"></i></span><span class="nav-label">Add New Part</span></a></li>
+        <li class="nav-item"><a href="pages/supplier_low_stock.html" class="nav-link"><span class="nav-icon"><i class="bi bi-exclamation-triangle"></i></span><span class="nav-label">Low Stock Alerts</span><span class="nav-badge urgent">3</span></a></li>
+      </ul>
+      <div class="nav-section-title">Quotes &amp; Orders</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="pages/supplier_rfq_inbox.html" class="nav-link"><span class="nav-icon"><i class="bi bi-inbox"></i></span><span class="nav-label">RFQ Inbox</span><span class="nav-badge urgent">7</span></a></li>
+        <li class="nav-item"><a href="pages/supplier_quotes.html" class="nav-link"><span class="nav-icon"><i class="bi bi-send"></i></span><span class="nav-label">My Quotes</span></a></li>
+        <li class="nav-item"><a href="pages/supplier_orders.html" class="nav-link"><span class="nav-icon"><i class="bi bi-bag-check"></i></span><span class="nav-label">Active Orders</span></a></li>
+        <li class="nav-item"><a href="pages/supplier_history.html" class="nav-link"><span class="nav-icon"><i class="bi bi-clock-history"></i></span><span class="nav-label">Order History</span></a></li>
+      </ul>
+      <div class="nav-section-title">Finance</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="pages/supplier_revenue.html" class="nav-link"><span class="nav-icon"><i class="bi bi-currency-rupee"></i></span><span class="nav-label">Revenue &amp; Payments</span></a></li>
+        <li class="nav-item"><a href="pages/supplier_invoices.html" class="nav-link"><span class="nav-icon"><i class="bi bi-file-earmark-pdf"></i></span><span class="nav-label">Invoices</span></a></li>
+        <li class="nav-item"><a href="pages/supplier_ratings.html" class="nav-link"><span class="nav-icon"><i class="bi bi-star"></i></span><span class="nav-label">My Ratings</span></a></li>
+        <li class="nav-item"><a href="pages/supplier_settings.html" class="nav-link"><span class="nav-icon"><i class="bi bi-gear"></i></span><span class="nav-label">Settings</span></a></li>
+      </ul>
+    </div>
+    <!-- ===== LOGISTICS ===== -->
+    <div class="nav-section d-none" data-role="logistics">
+      <div class="nav-section-title">Shipments</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="#" class="nav-link active"><span class="nav-icon"><i class="bi bi-speedometer2"></i></span><span class="nav-label">Dashboard</span></a></li>
+        <li class="nav-item"><a href="pages/log_shipments.html" class="nav-link"><span class="nav-icon"><i class="bi bi-truck"></i></span><span class="nav-label">Active Shipments</span><span class="nav-badge">42</span></a></li>
+        <li class="nav-item"><a href="pages/log_pickup.html" class="nav-link"><span class="nav-icon"><i class="bi bi-inbox"></i></span><span class="nav-label">Pickup Requests</span><span class="nav-badge urgent">15</span></a></li>
+        <li class="nav-item"><a href="pages/log_delivered.html" class="nav-link"><span class="nav-icon"><i class="bi bi-check2-all"></i></span><span class="nav-label">Delivered</span></a></li>
+      </ul>
+      <div class="nav-section-title">Operations</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="pages/log_tracking.html" class="nav-link"><span class="nav-icon"><i class="bi bi-geo-alt"></i></span><span class="nav-label">Live Tracking</span></a></li>
+        <li class="nav-item"><a href="pages/log_routes.html" class="nav-link"><span class="nav-icon"><i class="bi bi-map"></i></span><span class="nav-label">Route Planner</span></a></li>
+        <li class="nav-item"><a href="pages/log_fleet.html" class="nav-link"><span class="nav-icon"><i class="bi bi-people"></i></span><span class="nav-label">Drivers &amp; Fleet</span></a></li>
+        <li class="nav-item"><a href="pages/log_delays.html" class="nav-link"><span class="nav-icon"><i class="bi bi-exclamation-triangle"></i></span><span class="nav-label">Delays &amp; Issues</span><span class="nav-badge urgent">4</span></a></li>
+      </ul>
+      <div class="nav-section-title">Reports</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="pages/log_notifications.html" class="nav-link"><span class="nav-icon"><i class="bi bi-bell"></i></span><span class="nav-label">Notifications</span></a></li>
+        <li class="nav-item"><a href="pages/log_performance.html" class="nav-link"><span class="nav-icon"><i class="bi bi-bar-chart"></i></span><span class="nav-label">Performance</span></a></li>
+        <li class="nav-item"><a href="pages/log_pod.html" class="nav-link"><span class="nav-icon"><i class="bi bi-file-earmark-pdf"></i></span><span class="nav-label">POD Archive</span></a></li>
+        <li class="nav-item"><a href="pages/log_settings.html" class="nav-link"><span class="nav-icon"><i class="bi bi-gear"></i></span><span class="nav-label">Settings</span></a></li>
+      </ul>
+    </div>
+    <!-- ===== DESIGNER ===== -->
+    <div class="nav-section d-none" data-role="designer">
+      <div class="nav-section-title">Design Work</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="#" class="nav-link active"><span class="nav-icon"><i class="bi bi-speedometer2"></i></span><span class="nav-label">Dashboard</span></a></li>
+        <li class="nav-item"><a href="pages/des_upload.html" class="nav-link"><span class="nav-icon"><i class="bi bi-cloud-upload"></i></span><span class="nav-label">Upload Files</span></a></li>
+        <li class="nav-item"><a href="pages/des_projects.html" class="nav-link"><span class="nav-icon"><i class="bi bi-folder2-open"></i></span><span class="nav-label">My Projects</span><span class="nav-badge">12</span></a></li>
+        <li class="nav-item"><a href="pages/des_requests.html" class="nav-link"><span class="nav-icon"><i class="bi bi-clipboard-check"></i></span><span class="nav-label">Project Requests</span><span class="nav-badge urgent">5</span></a></li>
+      </ul>
+      <div class="nav-section-title">Collaboration</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="pages/des_versions.html" class="nav-link"><span class="nav-icon"><i class="bi bi-clock-history"></i></span><span class="nav-label">Version History</span></a></li>
+        <li class="nav-item"><a href="pages/des_chat.html" class="nav-link"><span class="nav-icon"><i class="bi bi-chat-dots"></i></span><span class="nav-label">Client Chat</span><span class="nav-badge bg-success">2</span></a></li>
+        <li class="nav-item"><a href="pages/des_shared.html" class="nav-link"><span class="nav-icon"><i class="bi bi-share"></i></span><span class="nav-label">Shared Files</span></a></li>
+        <li class="nav-item"><a href="pages/des_revisions.html" class="nav-link"><span class="nav-icon"><i class="bi bi-pencil-square"></i></span><span class="nav-label">Revision Notes</span></a></li>
+      </ul>
+      <div class="nav-section-title">Account</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="pages/des_portfolio.html" class="nav-link"><span class="nav-icon"><i class="bi bi-person-lines-fill"></i></span><span class="nav-label">My Portfolio</span></a></li>
+        <li class="nav-item"><a href="pages/des_earnings.html" class="nav-link"><span class="nav-icon"><i class="bi bi-currency-rupee"></i></span><span class="nav-label">Earnings</span></a></li>
+        <li class="nav-item"><a href="pages/des_settings.html" class="nav-link"><span class="nav-icon"><i class="bi bi-gear"></i></span><span class="nav-label">Settings</span></a></li>
+      </ul>
+    </div>
+    <!-- ===== DISTRIBUTOR ===== -->
+    <div class="nav-section d-none" data-role="distributor">
+      <div class="nav-section-title">Catalog</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="#" class="nav-link active"><span class="nav-icon"><i class="bi bi-speedometer2"></i></span><span class="nav-label">Dashboard</span></a></li>
+        <li class="nav-item"><a href="pages/dist_upload.html" class="nav-link"><span class="nav-icon"><i class="bi bi-upload"></i></span><span class="nav-label">Inventory Upload</span></a></li>
+        <li class="nav-item"><a href="pages/dist_catalog.html" class="nav-link"><span class="nav-icon"><i class="bi bi-boxes"></i></span><span class="nav-label">My Catalog</span><span class="nav-badge">2,840</span></a></li>
+        <li class="nav-item"><a href="pages/dist_bundles.html" class="nav-link"><span class="nav-icon"><i class="bi bi-tags"></i></span><span class="nav-label">Discount Bundles</span><span class="nav-badge">12</span></a></li>
+      </ul>
+      <div class="nav-section-title">Sales</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="pages/dist_matching.html" class="nav-link"><span class="nav-icon"><i class="bi bi-diagram-3"></i></span><span class="nav-label">Matching Requests</span><span class="nav-badge urgent">94</span></a></li>
+        <li class="nav-item"><a href="pages/dist_orders.html" class="nav-link"><span class="nav-icon"><i class="bi bi-bag-check"></i></span><span class="nav-label">Sales Orders</span></a></li>
+        <li class="nav-item"><a href="pages/dist_trends.html" class="nav-link"><span class="nav-icon"><i class="bi bi-graph-up"></i></span><span class="nav-label">Market Trends</span></a></li>
+        <li class="nav-item"><a href="pages/dist_dispatch.html" class="nav-link"><span class="nav-icon"><i class="bi bi-truck"></i></span><span class="nav-label">Dispatch Queue</span></a></li>
+      </ul>
+      <div class="nav-section-title">Finance</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="pages/dist_revenue.html" class="nav-link"><span class="nav-icon"><i class="bi bi-currency-rupee"></i></span><span class="nav-label">Revenue</span></a></li>
+        <li class="nav-item"><a href="pages/dist_invoices.html" class="nav-link"><span class="nav-icon"><i class="bi bi-file-earmark-pdf"></i></span><span class="nav-label">Invoices</span></a></li>
+        <li class="nav-item"><a href="pages/dist_settings.html" class="nav-link"><span class="nav-icon"><i class="bi bi-gear"></i></span><span class="nav-label">Settings</span></a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="sidebar-bottom">
+    <a href="#" class="sidebar-bottom-link"><i class="bi bi-question-circle me-2"></i><span>Help & Support</span></a>
+    <a href="#" class="sidebar-bottom-link"><i class="bi bi-book me-2"></i><span>Documentation</span></a>
+  </div>
+</aside>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ===================== MAIN WRAPPER ===================== -->
+<div class="main-wrapper" id="mainWrapper">
+
+  <!-- TOP NAVBAR -->
+  <nav class="top-navbar" id="topNavbar">
+    <button class="sidebar-toggle btn btn-link" id="sidebarToggle"><i class="bi bi-list fs-4"></i></button>
+    <div class="navbar-search ms-3">
+      <div class="input-group">
+        <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+        <input type="text" class="form-control bg-light border-start-0 ps-0" id="globalSearch" placeholder="Search parts, suppliers, orders..." autocomplete="off"/>
+      </div>
+      <div class="search-suggestions" id="searchSuggestions" style="display:none;">
+        <div class="suggestion-item"><i class="bi bi-box-seam me-2 text-primary"></i>Part #PL-2048 – Steel Bolt M12</div>
+        <div class="suggestion-item"><i class="bi bi-building me-2 text-success"></i>Supplier: Apex Forge Industries</div>
+        <div class="suggestion-item"><i class="bi bi-receipt me-2 text-warning"></i>Order #ORD-5892</div>
+      </div>
+    </div>
+    <div class="navbar-right ms-auto d-flex align-items-center gap-3">
+      <div class="dropdown d-none d-md-block">
+        <button class="btn btn-primary btn-sm" data-bs-toggle="dropdown"><i class="bi bi-plus-lg me-1"></i>Quick Action</button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="#"><i class="bi bi-file-earmark-plus me-2"></i>New RFQ</a></li>
+          <li><a class="dropdown-item" href="#"><i class="bi bi-person-plus me-2"></i>Add Supplier</a></li>
+          <li><a class="dropdown-item" href="#"><i class="bi bi-truck me-2"></i>Create Shipment</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#"><i class="bi bi-bar-chart me-2"></i>Generate Report</a></li>
+        </ul>
+      </div>
+      <div class="dropdown">
+        <button class="nav-icon-btn position-relative" data-bs-toggle="dropdown">
+          <i class="bi bi-bell fs-5"></i>
+          <span class="notification-badge pulse">4</span>
+        </button>
+        <div class="dropdown-menu dropdown-menu-end notification-dropdown" style="width:320px;">
+          <div class="notif-header d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+            <h6 class="mb-0 fw-semibold">Notifications</h6>
+            <a href="#" class="text-primary small">Mark all read</a>
+          </div>
+          <div class="notif-item unread">
+            <div class="notif-icon bg-primary-soft"><i class="bi bi-file-text text-primary"></i></div>
+            <div class="notif-content"><p class="mb-0 fw-medium" style="font-size:13px;">New RFQ from Tata Steel</p><small class="text-muted">2 minutes ago</small></div>
+          </div>
+          <div class="notif-item unread">
+            <div class="notif-icon bg-success-soft"><i class="bi bi-check-circle text-success"></i></div>
+            <div class="notif-content"><p class="mb-0 fw-medium" style="font-size:13px;">Order #ORD-4521 approved</p><small class="text-muted">15 minutes ago</small></div>
+          </div>
+          <div class="notif-item">
+            <div class="notif-icon bg-warning-soft"><i class="bi bi-exclamation-triangle text-warning"></i></div>
+            <div class="notif-content"><p class="mb-0 fw-medium" style="font-size:13px;">Low inventory alert – PL-089</p><small class="text-muted">1 hour ago</small></div>
+          </div>
+        </div>
+      </div>
+      <div class="vr opacity-25 d-none d-md-block" style="height:28px;"></div>
+      <div class="dropdown">
+        <button class="user-profile-btn d-flex align-items-center gap-2" data-bs-toggle="dropdown">
+          <div class="user-avatar"><span id="userInitials">AD</span></div>
+          <div class="d-none d-md-block text-start">
+            <div class="user-name fw-semibold" id="userName">Admin User</div>
+            <div class="user-role" id="userRole">Super Admin</div>
+          </div>
+          <i class="bi bi-chevron-down small ms-1 d-none d-md-block"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end profile-dropdown">
+          <li class="px-3 py-2"><div class="fw-semibold" id="profileName">Admin User</div><small class="text-muted">admin@partlink.io</small></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>My Profile</a></li>
+          <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Account Settings</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-box-arrow-right me-2"></i>Sign Out</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE CONTENT -->
+  <main class="content-area">
+<div class="dashboard-section" data-role="admin" >
+
+    <div class="page-header mb-4">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <h4 class="page-title mb-1">Admin Dashboard</h4>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Admin Dashboard</li>
+            </ol>
+          </nav>
+        </div>
+        <div>
+          <button class="btn-pl-primary" data-bs-toggle="modal" data-bs-target="#reportModal">
+  <i class="bi bi-download"></i> Export Report
+</button>
+        </div>
+      </div>
+    </div>
+    <!-- =============================================
+     KPI CARDS ROW
+============================================= -->
+<div class="row g-4 section-gap">
+
+  <!-- Total Users -->
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#1565C0; --kpi-soft-color:#DBEAFE;">
+      <div class="kpi-icon"><i class="bi bi-people-fill"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Total Users</div>
+        <div class="kpi-value">4,821</div>
+        <div class="kpi-delta positive">
+          <i class="bi bi-arrow-up-short"></i> 12.4% vs last month
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Total Orders -->
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#16A34A; --kpi-soft-color:#DCFCE7;">
+      <div class="kpi-icon"><i class="bi bi-bag-check-fill"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Total Orders</div>
+        <div class="kpi-value">12,394</div>
+        <div class="kpi-delta positive">
+          <i class="bi bi-arrow-up-short"></i> 8.7% vs last month
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revenue -->
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#D97706; --kpi-soft-color:#FEF3C7;">
+      <div class="kpi-icon"><i class="bi bi-currency-rupee"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Revenue (MTD)</div>
+        <div class="kpi-value">₹2.4Cr</div>
+        <div class="kpi-delta positive">
+          <i class="bi bi-arrow-up-short"></i> 6.1% vs last month
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pending Approvals -->
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#DC2626; --kpi-soft-color:#FEE2E2;">
+      <div class="kpi-icon"><i class="bi bi-person-exclamation"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Pending Approvals</div>
+        <div class="kpi-value">37</div>
+        <div class="kpi-delta negative">
+          <i class="bi bi-arrow-up-short"></i> Needs attention
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /KPI Row -->
+
+
+<!-- =============================================
+     CHARTS ROW
+============================================= -->
+<div class="row g-4 section-gap">
+
+  <!-- Order Trend Chart – Line -->
+  <div class="col-xl-8">
+    <div class="pl-card">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-graph-up me-2 text-primary"></i>Order Trends (Last 12 Months)</h6>
+        <div class="d-flex gap-2">
+          <select class="form-select form-select-sm" style="width:auto;" id="trendFilter">
+            <option>Monthly</option>
+            <option>Weekly</option>
+            <option>Quarterly</option>
+          </select>
+        </div>
+      </div>
+      <div class="card-body-custom">
+        <div class="chart-container" style="height:280px;">
+          <canvas id="orderTrendChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Growth – Doughnut -->
+  <div class="col-xl-4">
+    <div class="pl-card h-100">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-pie-chart me-2 text-primary"></i>User Roles</h6>
+      </div>
+      <div class="card-body-custom">
+        <div class="chart-container" style="height:200px;">
+          <canvas id="userRoleChart"></canvas>
+        </div>
+        <!-- Legend -->
+        <div class="mt-3">
+          <div class="d-flex flex-wrap gap-3 justify-content-center" style="font-size:12px;">
+            <span><i class="bi bi-circle-fill text-primary me-1"></i>Manufacturer</span>
+            <span><i class="bi bi-circle-fill text-success me-1"></i>Supplier</span>
+            <span><i class="bi bi-circle-fill text-warning me-1"></i>Logistics</span>
+            <span><i class="bi bi-circle-fill text-info me-1"></i>Designer</span>
+            <span><i class="bi bi-circle-fill text-danger me-1"></i>Distributor</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /Charts Row -->
+
+
+<!-- Revenue Bar Chart + System Status -->
+<div class="row g-4 section-gap">
+
+  <div class="col-xl-7">
+    <div class="pl-card">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-bar-chart me-2 text-primary"></i>Monthly Revenue (₹ Lakhs)</h6>
+      </div>
+      <div class="card-body-custom">
+        <div class="chart-container" style="height:240px;">
+          <canvas id="revenueBarChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- System Status -->
+  <div class="col-xl-5">
+    <div class="pl-card h-100">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-display me-2 text-primary"></i>System Status</h6>
+        <span class="status-badge status-active">All Systems Go</span>
+      </div>
+      <div class="card-body-custom">
+        <div class="system-status-item">
+          <div class="d-flex align-items-center">
+            <span class="status-dot online"></span>
+            <span class="fw-medium">API Gateway</span>
+          </div>
+          <div class="text-end">
+            <span class="status-badge status-active">Online</span>
+            <div class="text-muted" style="font-size:11px;">99.98% uptime</div>
+          </div>
+        </div>
+        <div class="system-status-item">
+          <div class="d-flex align-items-center">
+            <span class="status-dot online"></span>
+            <span class="fw-medium">Database Cluster</span>
+          </div>
+          <div class="text-end">
+            <span class="status-badge status-active">Online</span>
+            <div class="text-muted" style="font-size:11px;">12ms avg query</div>
+          </div>
+        </div>
+        <div class="system-status-item">
+          <div class="d-flex align-items-center">
+            <span class="status-dot warning"></span>
+            <span class="fw-medium">Email Service</span>
+          </div>
+          <div class="text-end">
+            <span class="status-badge status-pending">Degraded</span>
+            <div class="text-muted" style="font-size:11px;">2.1s delivery lag</div>
+          </div>
+        </div>
+        <div class="system-status-item">
+          <div class="d-flex align-items-center">
+            <span class="status-dot online"></span>
+            <span class="fw-medium">Storage (S3)</span>
+          </div>
+          <div class="text-end">
+            <span class="status-badge status-active">Online</span>
+            <div class="text-muted" style="font-size:11px;">78% used</div>
+          </div>
+        </div>
+        <div class="system-status-item">
+          <div class="d-flex align-items-center">
+            <span class="status-dot online"></span>
+            <span class="fw-medium">Search Engine</span>
+          </div>
+          <div class="text-end">
+            <span class="status-badge status-active">Online</span>
+            <div class="text-muted" style="font-size:11px;">8ms latency</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- =============================================
+     USER APPROVAL TABLE
+============================================= -->
+<div class="section-gap">
+  <div class="pl-table-wrapper">
+    <div class="pl-table-toolbar">
+      <h6 class="mb-0 fw-bold"><i class="bi bi-person-check me-2 text-primary"></i>Pending User Approvals</h6>
+      <div class="ms-auto d-flex gap-2 flex-wrap">
+        <select class="form-select form-select-sm" style="width:auto;">
+          <option>All Roles</option>
+          <option>Manufacturer</option>
+          <option>Supplier</option>
+          <option>Logistics</option>
+          <option>Designer</option>
+          <option>Distributor</option>
+        </select>
+        <input type="text" class="form-control form-control-sm" placeholder="Search user..." style="width:200px;" data-table-search="approvalTable">
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="pl-table" id="approvalTable">
+        <thead>
+          <tr>
+            <th data-sort="name"><span>User Name</span> <i class="bi bi-arrow-down-up sort-icon"></i></th>
+            <th data-sort="company">Company</th>
+            <th data-sort="role">Role</th>
+            <th data-sort="date">Registered <i class="bi bi-arrow-down-up sort-icon"></i></th>
+            <th>Status</th>
+            <th>Documents</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <!-- Replace with Django template loop:  -->
+          <tr>
+            <td>
+              <div class="user-chip">
+                <div class="avatar-sm">{{ user.initials }}</div>
+                <div>
+                  <div class="fw-medium">{{ user.name }}</div>
+                  <div style="font-size:11px;color:var(--pl-text-muted);">{{ user.email }}</div>
+                </div>
+              </div>
+            </td>
+            <td>{{ user.company }}</td>
+            <td><span class="status-badge status-pending">{{ user.role }}</span></td>
+            <td>{{ user.date }}</td>
+            <td><span class="status-badge status-pending">Pending</span></td>
+            <td>
+              <a href="#" class="text-primary small" data-bs-toggle="tooltip" title="View uploaded documents">
+                <i class="bi bi-file-earmark-text me-1"></i>2 docs
+              </a>
+            </td>
+            <td>
+              <div class="d-flex gap-2">
+                <button class="btn-approve" onclick="approveUser({{ user.id }})" data-bs-toggle="tooltip" title="Approve">
+                  <i class="bi bi-check-lg me-1"></i>Approve
+                </button>
+                <button class="btn-reject" onclick="rejectUser({{ user.id }})" data-bs-toggle="tooltip" title="Reject">
+                  <i class="bi bi-x-lg me-1"></i>Reject
+                </button>
+              </div>
+            </td>
+          </tr>
+          
+          <!-- Static fallback rows for UI preview -->
+          <tr>
+            <td>
+              <div class="user-chip">
+                <div class="avatar-sm">RK</div>
+                <div>
+                  <div class="fw-medium">Rajesh Kumar</div>
+                  <div style="font-size:11px;color:var(--pl-text-muted);">rajesh@forgeind.com</div>
+                </div>
+              </div>
+            </td>
+            <td>Forge Industries Pvt. Ltd.</td>
+            <td><span class="status-badge status-pending">Supplier</span></td>
+            <td>28 Mar 2025</td>
+            <td><span class="status-badge status-pending">Pending</span></td>
+            <td><a href="#" class="text-primary small"><i class="bi bi-file-earmark-text me-1"></i>3 docs</a></td>
+            <td>
+              <div class="d-flex gap-2">
+                <button class="btn-approve"><i class="bi bi-check-lg me-1"></i>Approve</button>
+                <button class="btn-reject"><i class="bi bi-x-lg me-1"></i>Reject</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="user-chip">
+                <div class="avatar-sm">PM</div>
+                <div>
+                  <div class="fw-medium">Priya Mehta</div>
+                  <div style="font-size:11px;color:var(--pl-text-muted);">priya@nexlogistics.in</div>
+                </div>
+              </div>
+            </td>
+            <td>Nex Logistics Solutions</td>
+            <td><span class="status-badge status-pending">Logistics</span></td>
+            <td>27 Mar 2025</td>
+            <td><span class="status-badge status-pending">Pending</span></td>
+            <td><a href="#" class="text-primary small"><i class="bi bi-file-earmark-text me-1"></i>2 docs</a></td>
+            <td>
+              <div class="d-flex gap-2">
+                <button class="btn-approve"><i class="bi bi-check-lg me-1"></i>Approve</button>
+                <button class="btn-reject"><i class="bi bi-x-lg me-1"></i>Reject</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="user-chip">
+                <div class="avatar-sm">AS</div>
+                <div>
+                  <div class="fw-medium">Arvind Shah</div>
+                  <div style="font-size:11px;color:var(--pl-text-muted);">arvind@metalcraft.com</div>
+                </div>
+              </div>
+            </td>
+            <td>MetalCraft Design Studio</td>
+            <td><span class="status-badge status-pending">Designer</span></td>
+            <td>26 Mar 2025</td>
+            <td><span class="status-badge status-pending">Pending</span></td>
+            <td><a href="#" class="text-primary small"><i class="bi bi-file-earmark-text me-1"></i>1 doc</a></td>
+            <td>
+              <div class="d-flex gap-2">
+                <button class="btn-approve"><i class="bi bi-check-lg me-1"></i>Approve</button>
+                <button class="btn-reject"><i class="bi bi-x-lg me-1"></i>Reject</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="user-chip">
+                <div class="avatar-sm">SV</div>
+                <div>
+                  <div class="fw-medium">Suresh Verma</div>
+                  <div style="font-size:11px;color:var(--pl-text-muted);">suresh@tatasteelmsme.com</div>
+                </div>
+              </div>
+            </td>
+            <td>TATA Steel MSME Unit</td>
+            <td><span class="status-badge status-pending">Manufacturer</span></td>
+            <td>25 Mar 2025</td>
+            <td><span class="status-badge status-pending">Pending</span></td>
+            <td><a href="#" class="text-primary small"><i class="bi bi-file-earmark-text me-1"></i>4 docs</a></td>
+            <td>
+              <div class="d-flex gap-2">
+                <button class="btn-approve"><i class="bi bi-check-lg me-1"></i>Approve</button>
+                <button class="btn-reject"><i class="bi bi-x-lg me-1"></i>Reject</button>
+              </div>
+            </td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+    <!-- Pagination -->
+    <div class="d-flex align-items-center justify-content-between px-4 py-3 border-top">
+      <span style="font-size:13px;color:var(--pl-text-muted);">Showing 4 of 37 pending approvals</span>
+      <nav>
+        <ul class="pagination pagination-sm mb-0">
+          <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+          <li class="page-item active"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+<!-- =============================================
+     REPORTS / FLAGS TABLE
+============================================= -->
+<div class="section-gap">
+  <div class="pl-table-wrapper">
+    <div class="pl-table-toolbar">
+      <h6 class="mb-0 fw-bold"><i class="bi bi-flag me-2 text-danger"></i>Reports & Flags</h6>
+      <div class="ms-auto d-flex gap-2">
+        <select class="form-select form-select-sm" style="width:auto;">
+          <option>All Severity</option>
+          <option>Critical</option>
+          <option>High</option>
+          <option>Medium</option>
+          <option>Low</option>
+        </select>
+        <button class="btn btn-sm btn-outline-primary">
+          <i class="bi bi-funnel me-1"></i>Filter
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="pl-table">
+        <thead>
+          <tr>
+            <th data-sort="id">Report ID</th>
+            <th data-sort="type">Type</th>
+            <th data-sort="subject">Subject</th>
+            <th data-sort="reported_by">Reported By</th>
+            <th>Severity</th>
+            <th data-sort="date">Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="fw-mono text-primary" style="font-family:monospace;">#RPT-1092</span></td>
+            <td>Fraud Claim</td>
+            <td>Supplier overcharged for Part #PL-882</td>
+            <td>Tata Motors Ltd.</td>
+            <td><span class="status-badge status-rejected">Critical</span></td>
+            <td>29 Mar 2025</td>
+            <td><span class="status-badge status-pending">Open</span></td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#reportDetailModal">
+                <i class="bi bi-eye"></i> Review
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="text-primary" style="font-family:monospace;">#RPT-1091</span></td>
+            <td>Quality Issue</td>
+            <td>Parts delivered not matching spec sheet</td>
+            <td>Maruti Suzuki India</td>
+            <td><span class="status-badge status-pending">High</span></td>
+            <td>28 Mar 2025</td>
+            <td><span class="status-badge status-pending">Under Review</span></td>
+            <td><button class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i> Review</button></td>
+          </tr>
+          <tr>
+            <td><span class="text-primary" style="font-family:monospace;">#RPT-1088</span></td>
+            <td>Late Delivery</td>
+            <td>Order #ORD-4421 delayed by 12 days</td>
+            <td>Bajaj Auto Ltd.</td>
+            <td><span class="status-badge" style="background:#EDE9FE;color:#7C3AED;">Medium</span></td>
+            <td>25 Mar 2025</td>
+            <td><span class="status-badge status-approved">Resolved</span></td>
+            <td><button class="btn btn-sm btn-outline-secondary"><i class="bi bi-check2"></i> Closed</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- =============================================
+     EXPORT REPORT MODAL
+============================================= -->
+<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reportModalLabel">
+          <i class="bi bi-download me-2 text-primary"></i>Export Report
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="exportForm">
+          <div class="mb-3">
+            <label class="form-label">Report Type</label>
+            <select class="form-select">
+              <option>User Summary Report</option>
+              <option>Revenue Report</option>
+              <option>Order Analytics</option>
+              <option>Flags & Incidents</option>
+            </select>
+          </div>
+          <div class="row mb-3">
+            <div class="col-6">
+              <label class="form-label">From Date</label>
+              <input type="date" class="form-control" value="2025-03-01">
+            </div>
+            <div class="col-6">
+              <label class="form-label">To Date</label>
+              <input type="date" class="form-control" value="2025-03-31">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Format</label>
+            <div class="d-flex gap-3">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="format" id="fmtCSV" checked>
+                <label class="form-check-label" for="fmtCSV">CSV</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="format" id="fmtPDF">
+                <label class="form-check-label" for="fmtPDF">PDF</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="format" id="fmtXLS">
+                <label class="form-check-label" for="fmtXLS">Excel</label>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pl-primary" type="submit">
+          <i class="bi bi-download me-1"></i> Generate & Download
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="dashboard-section" data-role="manufacturer" style="display:none;">
+
+    <div class="page-header mb-4">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <h4 class="page-title mb-1">Manufacturer Dashboard</h4>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Manufacturer Dashboard</li>
+            </ol>
+          </nav>
+        </div>
+        <div>
+          <button class="btn-pl-primary" data-bs-toggle="modal" data-bs-target="#rfqModal">
+  <i class="bi bi-plus-lg me-1"></i> New RFQ
+</button>
+        </div>
+      </div>
+    </div>
+    <!-- KPI Cards -->
+<div class="row g-4 section-gap">
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#1565C0;--kpi-soft-color:#DBEAFE;">
+      <div class="kpi-icon"><i class="bi bi-file-earmark-plus"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Active RFQs</div>
+        <div class="kpi-value">18</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i> 3 new today</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#16A34A;--kpi-soft-color:#DCFCE7;">
+      <div class="kpi-icon"><i class="bi bi-bag-check"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Orders Placed</div>
+        <div class="kpi-value">142</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i> 9.8% this month</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#D97706;--kpi-soft-color:#FEF3C7;">
+      <div class="kpi-icon"><i class="bi bi-receipt"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Quotes Received</div>
+        <div class="kpi-value">57</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i> 12 pending review</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#0891B2;--kpi-soft-color:#CFFAFE;">
+      <div class="kpi-icon"><i class="bi bi-truck"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">In Transit</div>
+        <div class="kpi-value">9</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i> 2 arriving today</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Search + Filter UI -->
+<div class="pl-card section-gap">
+  <div class="card-header-custom">
+    <h6 class="card-title-custom"><i class="bi bi-search me-2 text-primary"></i>Search Suppliers & Parts</h6>
+  </div>
+  <div class="card-body-custom">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label">Part Name / SKU</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-box-seam"></i></span>
+          <input type="text" class="form-control" id="partSearch" placeholder="e.g. Steel Bolt M12, PL-2048">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Category</label>
+        <select class="form-select">
+          <option>All Categories</option>
+          <option>Fasteners</option>
+          <option>Sheet Metal</option>
+          <option>Castings</option>
+          <option>Electronics</option>
+          <option>Plastics</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Delivery Within</label>
+        <select class="form-select">
+          <option>Any Time</option>
+          <option>3 Days</option>
+          <option>1 Week</option>
+          <option>2 Weeks</option>
+          <option>1 Month</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Min. Rating</label>
+        <select class="form-select">
+          <option>Any Rating</option>
+          <option>4.5+</option>
+          <option>4.0+</option>
+          <option>3.5+</option>
+        </select>
+      </div>
+      <div class="col-md-2 d-flex align-items-end">
+        <button class="btn-pl-primary w-100" id="searchBtn">
+          <i class="bi bi-search me-1"></i> Search
+        </button>
+      </div>
+    </div>
+    <!-- Advanced Filters -->
+    <div class="mt-2">
+      <button class="btn btn-link btn-sm text-muted p-0" data-bs-toggle="collapse" data-bs-target="#advFilters">
+        <i class="bi bi-sliders me-1"></i>Advanced Filters
+      </button>
+      <div class="collapse mt-3" id="advFilters">
+        <div class="row g-3 p-3 bg-light rounded">
+          <div class="col-md-3">
+            <label class="form-label">Max Price (₹)</label>
+            <input type="number" class="form-control" placeholder="e.g. 5000">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Quantity (MOQ)</label>
+            <input type="number" class="form-control" placeholder="Min qty">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Certification</label>
+            <select class="form-select">
+              <option>Any</option>
+              <option>ISO 9001</option>
+              <option>IATF 16949</option>
+              <option>BIS Certified</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Supplier State</label>
+            <select class="form-select">
+              <option>All India</option>
+              <option>Maharashtra</option>
+              <option>Gujarat</option>
+              <option>Tamil Nadu</option>
+              <option>Rajasthan</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quote Comparison Table + Demand Forecast -->
+<div class="row g-4 section-gap">
+
+  <!-- Quote Comparison Table -->
+  <div class="col-xl-8">
+    <div class="pl-table-wrapper">
+      <div class="pl-table-toolbar">
+        <h6 class="mb-0 fw-bold"><i class="bi bi-receipt me-2 text-primary"></i>Quote Comparison – RFQ #2048</h6>
+        <span class="ms-2 status-badge status-pending small">Part: Steel Bolt M12 × 500 units</span>
+        <div class="ms-auto d-flex gap-2">
+          <button class="btn btn-sm btn-outline-success">
+            <i class="bi bi-check-circle me-1"></i>Accept Best
+          </button>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="pl-table">
+          <thead>
+            <tr>
+              <th data-sort="supplier">Supplier</th>
+              <th data-sort="price">Unit Price <i class="bi bi-arrow-down-up sort-icon"></i></th>
+              <th>Total Quote</th>
+              <th data-sort="delivery">Delivery</th>
+              <th>Rating</th>
+              <th>Certifications</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:rgba(22,163,74,0.04);">
+              <td>
+                <div class="user-chip">
+                  <div class="avatar-sm" style="background:linear-gradient(135deg,#16A34A,#4ADE80);">AF</div>
+                  <div>
+                    <div class="fw-medium">Apex Forge Ind.</div>
+                    <div style="font-size:11px;color:var(--pl-text-muted);">Pune, Maharashtra</div>
+                  </div>
+                </div>
+              </td>
+              <td><strong class="text-success">₹28.50</strong></td>
+              <td>₹14,250</td>
+              <td><span class="status-badge status-active">5 Days</span></td>
+              <td><span class="star-rating">★★★★★</span> <span style="font-size:12px;">4.9</span></td>
+              <td><span class="badge bg-light border text-dark me-1" style="font-size:10px;">ISO 9001</span></td>
+              <td>
+                <button class="btn-approve"><i class="bi bi-check2 me-1"></i>Select</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-chip">
+                  <div class="avatar-sm">SM</div>
+                  <div>
+                    <div class="fw-medium">SteelMart Corp</div>
+                    <div style="font-size:11px;color:var(--pl-text-muted);">Ahmedabad, Gujarat</div>
+                  </div>
+                </div>
+              </td>
+              <td>₹31.00</td>
+              <td>₹15,500</td>
+              <td><span class="status-badge status-pending">8 Days</span></td>
+              <td><span class="star-rating">★★★★<span class="empty">★</span></span> <span style="font-size:12px;">4.2</span></td>
+              <td><span class="badge bg-light border text-dark" style="font-size:10px;">BIS</span></td>
+              <td><button class="btn btn-sm btn-outline-primary">Details</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-chip">
+                  <div class="avatar-sm" style="background:linear-gradient(135deg,#D97706,#FCD34D);">PF</div>
+                  <div>
+                    <div class="fw-medium">PrecisionFab Ltd.</div>
+                    <div style="font-size:11px;color:var(--pl-text-muted);">Chennai, Tamil Nadu</div>
+                  </div>
+                </div>
+              </td>
+              <td>₹33.75</td>
+              <td>₹16,875</td>
+              <td><span class="status-badge status-transit">10 Days</span></td>
+              <td><span class="star-rating">★★★★<span class="empty">★</span></span> <span style="font-size:12px;">4.0</span></td>
+              <td><span class="badge bg-light border text-dark me-1" style="font-size:10px;">ISO 9001</span><span class="badge bg-light border text-dark" style="font-size:10px;">IATF</span></td>
+              <td><button class="btn btn-sm btn-outline-primary">Details</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Demand Prediction Chart -->
+  <div class="col-xl-4">
+    <div class="pl-card h-100">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-graph-up-arrow me-2 text-primary"></i>Demand Forecast</h6>
+        <span class="status-badge status-active small">AI Predicted</span>
+      </div>
+      <div class="card-body-custom">
+        <div class="chart-container" style="height:200px;">
+          <canvas id="demandChart"></canvas>
+        </div>
+        <div class="mt-3 p-3 rounded" style="background:var(--pl-primary-soft);border:1px solid rgba(21,101,192,0.2);">
+          <div style="font-size:12.5px;font-weight:600;color:var(--pl-primary);">
+            <i class="bi bi-lightbulb me-1"></i> AI Insight
+          </div>
+          <p class="mb-0 mt-1" style="font-size:12px;">Demand for <strong>Steel Bolts M12</strong> expected to rise <strong>+22%</strong> in Q2 2025. Consider placing bulk orders now.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Order Tracking Cards -->
+<div class="section-gap">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h6 class="fw-bold mb-0"><i class="bi bi-bag-check me-2 text-primary"></i>Active Orders</h6>
+    <a href="/manufacturer/orders" class="text-primary small">View All Orders →</a>
+  </div>
+  <div class="row g-3">
+
+    
+    <!-- Replace with Django loop. Static 3 cards shown below: -->
+    
+
+    <!-- Order Card 1 -->
+    <div class="col-xl-4 col-md-6">
+      <div class="pl-card">
+        <div class="card-body-custom">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <div class="fw-bold" style="font-family:monospace;">#ORD-4892</div>
+              <div style="font-size:12px;color:var(--pl-text-muted);">28 Mar 2025</div>
+            </div>
+            <span class="status-badge status-transit">In Transit</span>
+          </div>
+          <div class="mb-2">
+            <div style="font-size:13px;font-weight:600;">Steel Bolt M12 (500 Units)</div>
+            <div style="font-size:12px;color:var(--pl-text-muted);">Supplier: Apex Forge Industries</div>
+          </div>
+          <!-- Progress Bar -->
+          <div class="mt-3">
+            <div class="d-flex justify-content-between mb-1" style="font-size:11px;color:var(--pl-text-muted);">
+              <span>Delivery Progress</span><span>65%</span>
+            </div>
+            <div class="progress" style="height:6px;border-radius:3px;">
+              <div class="progress-bar bg-primary" style="width:65%;"></div>
+            </div>
+          </div>
+          <!-- Mini Tracking Steps -->
+          <div class="d-flex justify-content-between mt-3" style="font-size:11px;">
+            <div class="text-center">
+              <i class="bi bi-check-circle-fill text-success d-block fs-5"></i>
+              <span class="text-muted">Ordered</span>
+            </div>
+            <div class="text-center" style="flex:1;border-top:2px solid var(--pl-success);margin:10px 4px 0;"></div>
+            <div class="text-center">
+              <i class="bi bi-check-circle-fill text-success d-block fs-5"></i>
+              <span class="text-muted">Dispatched</span>
+            </div>
+            <div class="text-center" style="flex:1;border-top:2px solid var(--pl-primary);margin:10px 4px 0;"></div>
+            <div class="text-center">
+              <i class="bi bi-truck text-primary d-block fs-5"></i>
+              <span class="text-primary fw-medium">In Transit</span>
+            </div>
+            <div class="text-center" style="flex:1;border-top:2px dashed var(--pl-border);margin:10px 4px 0;"></div>
+            <div class="text-center">
+              <i class="bi bi-circle text-muted d-block fs-5"></i>
+              <span class="text-muted">Delivered</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Card 2 -->
+    <div class="col-xl-4 col-md-6">
+      <div class="pl-card">
+        <div class="card-body-custom">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <div class="fw-bold" style="font-family:monospace;">#ORD-4881</div>
+              <div style="font-size:12px;color:var(--pl-text-muted);">25 Mar 2025</div>
+            </div>
+            <span class="status-badge status-approved">Delivered</span>
+          </div>
+          <div class="mb-2">
+            <div style="font-size:13px;font-weight:600;">Aluminium Sheets 2mm (100 Pcs)</div>
+            <div style="font-size:12px;color:var(--pl-text-muted);">Supplier: SteelMart Corp</div>
+          </div>
+          <div class="mt-3">
+            <div class="d-flex justify-content-between mb-1" style="font-size:11px;color:var(--pl-text-muted);">
+              <span>Delivery Progress</span><span>100%</span>
+            </div>
+            <div class="progress" style="height:6px;border-radius:3px;">
+              <div class="progress-bar bg-success" style="width:100%;"></div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between mt-3" style="font-size:11px;">
+            <div class="text-center"><i class="bi bi-check-circle-fill text-success d-block fs-5"></i><span class="text-muted">Ordered</span></div>
+            <div class="text-center" style="flex:1;border-top:2px solid var(--pl-success);margin:10px 4px 0;"></div>
+            <div class="text-center"><i class="bi bi-check-circle-fill text-success d-block fs-5"></i><span class="text-muted">Dispatched</span></div>
+            <div class="text-center" style="flex:1;border-top:2px solid var(--pl-success);margin:10px 4px 0;"></div>
+            <div class="text-center"><i class="bi bi-check-circle-fill text-success d-block fs-5"></i><span class="text-muted">In Transit</span></div>
+            <div class="text-center" style="flex:1;border-top:2px solid var(--pl-success);margin:10px 4px 0;"></div>
+            <div class="text-center"><i class="bi bi-check-circle-fill text-success d-block fs-5"></i><span class="text-success fw-medium">Delivered</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Card 3 -->
+    <div class="col-xl-4 col-md-6">
+      <div class="pl-card">
+        <div class="card-body-custom">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <div class="fw-bold" style="font-family:monospace;">#ORD-4901</div>
+              <div style="font-size:12px;color:var(--pl-text-muted);">30 Mar 2025</div>
+            </div>
+            <span class="status-badge status-pending">Processing</span>
+          </div>
+          <div class="mb-2">
+            <div style="font-size:13px;font-weight:600;">CNC Machined Parts (200 Units)</div>
+            <div style="font-size:12px;color:var(--pl-text-muted);">Supplier: PrecisionFab Ltd.</div>
+          </div>
+          <div class="mt-3">
+            <div class="d-flex justify-content-between mb-1" style="font-size:11px;color:var(--pl-text-muted);">
+              <span>Delivery Progress</span><span>15%</span>
+            </div>
+            <div class="progress" style="height:6px;border-radius:3px;">
+              <div class="progress-bar" style="width:15%;background:var(--pl-warning);"></div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between mt-3" style="font-size:11px;">
+            <div class="text-center"><i class="bi bi-check-circle-fill text-success d-block fs-5"></i><span class="text-muted">Ordered</span></div>
+            <div class="text-center" style="flex:1;border-top:2px solid var(--pl-warning);margin:10px 4px 0;"></div>
+            <div class="text-center"><i class="bi bi-arrow-repeat text-warning d-block fs-5"></i><span class="text-warning fw-medium">Processing</span></div>
+            <div class="text-center" style="flex:1;border-top:2px dashed var(--pl-border);margin:10px 4px 0;"></div>
+            <div class="text-center"><i class="bi bi-circle text-muted d-block fs-5"></i><span class="text-muted">In Transit</span></div>
+            <div class="text-center" style="flex:1;border-top:2px dashed var(--pl-border);margin:10px 4px 0;"></div>
+            <div class="text-center"><i class="bi bi-circle text-muted d-block fs-5"></i><span class="text-muted">Delivered</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<!-- =============================================
+     RFQ SUBMISSION MODAL
+============================================= -->
+<div class="modal fade" id="rfqModal" tabindex="-1" aria-labelledby="rfqModalLabel">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rfqModalLabel">
+          <i class="bi bi-file-earmark-plus me-2 text-primary"></i>Submit New RFQ
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="rfqForm">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Part Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" required placeholder="e.g. Steel Bolt M12">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Category <span class="text-danger">*</span></label>
+              <select class="form-select" required>
+                <option value="">Select</option>
+                <option>Fasteners</option>
+                <option>Sheet Metal</option>
+                <option>Castings</option>
+                <option>Electronics</option>
+                <option>Plastics</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Quantity <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" required placeholder="e.g. 500" min="1">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Unit</label>
+              <select class="form-select">
+                <option>Pieces (pcs)</option>
+                <option>Kilograms (kg)</option>
+                <option>Meters (m)</option>
+                <option>Sets</option>
+                <option>Lots</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Target Price (₹/unit)</label>
+              <input type="number" class="form-control" placeholder="Optional budget">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Delivery Required By <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" required>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Technical Specifications</label>
+              <textarea class="form-control" rows="3" placeholder="Material grade, dimensions, tolerance, finish, etc."></textarea>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Required Certifications</label>
+              <select class="form-select" multiple style="height:92px;">
+                <option>ISO 9001</option>
+                <option>IATF 16949</option>
+                <option>BIS Certified</option>
+                <option>RoHS Compliant</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Attach Technical Drawing</label>
+              <input type="file" class="form-control" accept=".pdf,.dwg,.dxf,.step">
+              <div class="form-text">PDF, DWG, DXF, STEP formats accepted (Max 10MB)</div>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Additional Notes</label>
+              <textarea class="form-control" rows="2" placeholder="Any special requirements or conditions..."></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-outline-primary me-2">Save as Draft</button>
+        <button class="btn-pl-primary">
+          <i class="bi bi-send me-1"></i> Submit RFQ
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="dashboard-section" data-role="supplier" style="display:none;">
+
+    <div class="page-header mb-4">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <h4 class="page-title mb-1">Supplier Dashboard</h4>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Supplier Dashboard</li>
+            </ol>
+          </nav>
+        </div>
+        <div>
+          <button class="btn-pl-primary" data-bs-toggle="modal" data-bs-target="#addInventoryModal">
+  <i class="bi bi-plus-lg me-1"></i> Add Inventory
+</button>
+        </div>
+      </div>
+    </div>
+    <!-- KPI Cards -->
+<div class="row g-4 section-gap">
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#1565C0;--kpi-soft-color:#DBEAFE;">
+      <div class="kpi-icon"><i class="bi bi-inbox"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Open RFQs</div>
+        <div class="kpi-value">23</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>7 new today</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#16A34A;--kpi-soft-color:#DCFCE7;">
+      <div class="kpi-icon"><i class="bi bi-currency-rupee"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Revenue (MTD)</div>
+        <div class="kpi-value">₹18.2L</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>14.2% this month</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#D97706;--kpi-soft-color:#FEF3C7;">
+      <div class="kpi-icon"><i class="bi bi-boxes"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">SKUs in Stock</div>
+        <div class="kpi-value">184</div>
+        <div class="kpi-delta negative"><i class="bi bi-arrow-down-short"></i>8 low stock alerts</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#0891B2;--kpi-soft-color:#CFFAFE;">
+      <div class="kpi-icon"><i class="bi bi-star-fill"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Avg Rating</div>
+        <div class="kpi-value">4.7</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>+0.2 this quarter</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Inventory Table + Revenue Chart -->
+<div class="row g-4 section-gap">
+
+  <!-- Inventory Table -->
+  <div class="col-xl-7">
+    <div class="pl-table-wrapper">
+      <div class="pl-table-toolbar">
+        <h6 class="mb-0 fw-bold"><i class="bi bi-boxes me-2 text-primary"></i>Inventory</h6>
+        <div class="ms-auto d-flex gap-2">
+          <input type="text" class="form-control form-control-sm" placeholder="Search inventory..." style="width:180px;" data-table-search="inventoryTable">
+          <select class="form-select form-select-sm" style="width:auto;">
+            <option>All Status</option>
+            <option>In Stock</option>
+            <option>Low Stock</option>
+            <option>Out of Stock</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="pl-table" id="inventoryTable">
+          <thead>
+            <tr>
+              <th data-sort="sku">SKU</th>
+              <th data-sort="name">Part Name <i class="bi bi-arrow-down-up sort-icon"></i></th>
+              <th data-sort="qty">Qty <i class="bi bi-arrow-down-up sort-icon"></i></th>
+              <th>Unit</th>
+              <th data-sort="price">Price (₹)</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span style="font-family:monospace;font-size:12px;">PL-1082</span></td>
+              <td>Steel Bolt M12 × 40mm</td>
+              <td>12,400</td>
+              <td>pcs</td>
+              <td>₹28.50</td>
+              <td><span class="status-badge status-active">In Stock</span></td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editInventoryModal" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td><span style="font-family:monospace;font-size:12px;">PL-1091</span></td>
+              <td>Aluminium Sheet 2mm</td>
+              <td>320</td>
+              <td>pcs</td>
+              <td>₹145.00</td>
+              <td><span class="status-badge status-active">In Stock</span></td>
+              <td><button class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></button></td>
+            </tr>
+            <tr>
+              <td><span style="font-family:monospace;font-size:12px;">PL-1104</span></td>
+              <td>Hex Nut M10 SS304</td>
+              <td>85</td>
+              <td>pcs</td>
+              <td>₹12.00</td>
+              <td><span class="status-badge status-pending">Low Stock</span></td>
+              <td><button class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></button></td>
+            </tr>
+            <tr>
+              <td><span style="font-family:monospace;font-size:12px;">PL-1118</span></td>
+              <td>CNC Machined Shaft D20</td>
+              <td>0</td>
+              <td>pcs</td>
+              <td>₹2,400.00</td>
+              <td><span class="status-badge status-rejected">Out of Stock</span></td>
+              <td><button class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></button></td>
+            </tr>
+            <tr>
+              <td><span style="font-family:monospace;font-size:12px;">PL-1125</span></td>
+              <td>Rubber O-Ring 50mm</td>
+              <td>6,800</td>
+              <td>pcs</td>
+              <td>₹8.75</td>
+              <td><span class="status-badge status-active">In Stock</span></td>
+              <td><button class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></button></td>
+            </tr>
+            <tr>
+              <td><span style="font-family:monospace;font-size:12px;">PL-1133</span></td>
+              <td>Stainless Spring Washer M8</td>
+              <td>150</td>
+              <td>pcs</td>
+              <td>₹6.50</td>
+              <td><span class="status-badge status-pending">Low Stock</span></td>
+              <td><button class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revenue Chart -->
+  <div class="col-xl-5">
+    <div class="pl-card h-100">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-graph-up me-2 text-primary"></i>Revenue Trend</h6>
+        <select class="form-select form-select-sm" style="width:auto;">
+          <option>This Year</option>
+          <option>Last Year</option>
+          <option>Last 6 Months</option>
+        </select>
+      </div>
+      <div class="card-body-custom">
+        <div class="chart-container" style="height:220px;">
+          <canvas id="supplierRevenueChart"></canvas>
+        </div>
+        <!-- Revenue Summary -->
+        <div class="row g-2 mt-3">
+          <div class="col-4">
+            <div class="p-2 rounded text-center" style="background:var(--pl-bg);border:1px solid var(--pl-border);">
+              <div style="font-size:11px;color:var(--pl-text-muted);">This Month</div>
+              <div style="font-size:15px;font-weight:700;color:var(--pl-primary);">₹18.2L</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="p-2 rounded text-center" style="background:var(--pl-bg);border:1px solid var(--pl-border);">
+              <div style="font-size:11px;color:var(--pl-text-muted);">Last Month</div>
+              <div style="font-size:15px;font-weight:700;color:var(--pl-text);">₹15.9L</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="p-2 rounded text-center" style="background:var(--pl-success-soft);border:1px solid rgba(22,163,74,0.2);">
+              <div style="font-size:11px;color:var(--pl-text-muted);">Growth</div>
+              <div style="font-size:15px;font-weight:700;color:var(--pl-success);">+14.2%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- RFQ Inbox + Feedback -->
+<div class="row g-4 section-gap">
+
+  <!-- RFQ Inbox Panel -->
+  <div class="col-xl-7">
+    <div class="pl-card">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-inbox me-2 text-primary"></i>RFQ Inbox</h6>
+        <span class="status-badge status-pending">23 Open</span>
+      </div>
+      <div class="card-body-custom p-0">
+        
+        <!-- Static RFQ items for UI preview -->
+        <div class="rfq-item border-bottom p-3" style="cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='var(--pl-bg)'" onmouseout="this.style.background=''">
+          <div class="d-flex align-items-start justify-content-between">
+            <div class="d-flex gap-3">
+              <div class="avatar-sm mt-1" style="background:linear-gradient(135deg,#1565C0,#42A5F5);">TM</div>
+              <div>
+                <div class="fw-semibold" style="font-size:13.5px;">Tata Motors Ltd.</div>
+                <div style="font-size:12px;color:var(--pl-text-muted);">Steel Bolt M12 × 2,000 units • By 10 Apr 2025</div>
+                <div class="mt-1">
+                  <span class="badge bg-light border text-dark me-1" style="font-size:10px;">ISO 9001 Required</span>
+                  <span class="badge bg-light border text-dark" style="font-size:10px;">₹25/unit budget</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-end">
+              <div style="font-size:11px;color:var(--pl-text-muted);">2h ago</div>
+              <button class="btn-pl-primary mt-2" style="font-size:11px;padding:5px 12px;" data-bs-toggle="modal" data-bs-target="#quoteModal">
+                <i class="bi bi-send me-1"></i>Quote
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="rfq-item border-bottom p-3" style="cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='var(--pl-bg)'" onmouseout="this.style.background=''">
+          <div class="d-flex align-items-start justify-content-between">
+            <div class="d-flex gap-3">
+              <div class="avatar-sm mt-1" style="background:linear-gradient(135deg,#D97706,#FCD34D);">BA</div>
+              <div>
+                <div class="fw-semibold" style="font-size:13.5px;">Bajaj Auto Ltd.</div>
+                <div style="font-size:12px;color:var(--pl-text-muted);">Hex Nut M10 SS304 × 5,000 units • By 15 Apr 2025</div>
+                <div class="mt-1">
+                  <span class="badge bg-light border text-dark me-1" style="font-size:10px;">BIS Certified</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-end">
+              <div style="font-size:11px;color:var(--pl-text-muted);">5h ago</div>
+              <button class="btn-pl-primary mt-2" style="font-size:11px;padding:5px 12px;" data-bs-toggle="modal" data-bs-target="#quoteModal">
+                <i class="bi bi-send me-1"></i>Quote
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="rfq-item p-3" style="cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='var(--pl-bg)'" onmouseout="this.style.background=''">
+          <div class="d-flex align-items-start justify-content-between">
+            <div class="d-flex gap-3">
+              <div class="avatar-sm mt-1" style="background:linear-gradient(135deg,#16A34A,#4ADE80);">MS</div>
+              <div>
+                <div class="fw-semibold" style="font-size:13.5px;">Maruti Suzuki India</div>
+                <div style="font-size:12px;color:var(--pl-text-muted);">Rubber O-Ring 50mm × 10,000 units • By 20 Apr 2025</div>
+                <div class="mt-1">
+                  <span class="badge bg-light border text-dark" style="font-size:10px;">RoHS Compliant</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-end">
+              <div style="font-size:11px;color:var(--pl-text-muted);">1d ago</div>
+              <button class="btn-pl-primary mt-2" style="font-size:11px;padding:5px 12px;" data-bs-toggle="modal" data-bs-target="#quoteModal">
+                <i class="bi bi-send me-1"></i>Quote
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="p-3 text-center border-top">
+          <a href="/supplier/rfq-inbox" class="text-primary small fw-medium">View all 23 RFQs →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feedback & Ratings -->
+  <div class="col-xl-5">
+    <div class="pl-card h-100">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-star me-2 text-primary"></i>Feedback & Ratings</h6>
+      </div>
+      <div class="card-body-custom">
+        <!-- Overall Rating Display -->
+        <div class="text-center mb-4">
+          <div style="font-size:52px;font-weight:800;color:var(--pl-text);">4.7</div>
+          <div class="star-rating fs-4">★★★★★</div>
+          <div style="font-size:12px;color:var(--pl-text-muted);margin-top:4px;">Based on 138 reviews</div>
+        </div>
+        <!-- Rating Breakdown Bars -->
+        <div class="rating-breakdown">
+          
+          <div class="d-flex align-items-center gap-2 mb-2" style="font-size:12.5px;">
+            <span style="width:20px;text-align:right;color:var(--pl-text-muted);">5</span>
+            <i class="bi bi-star-fill text-warning" style="font-size:11px;"></i>
+            <div class="progress flex-1" style="height:8px;border-radius:4px;">
+              <div class="progress-bar bg-warning" style="width:68%;"></div>
+            </div>
+            <span style="width:30px;color:var(--pl-text-muted);">68%</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 mb-2" style="font-size:12.5px;">
+            <span style="width:20px;text-align:right;color:var(--pl-text-muted);">4</span>
+            <i class="bi bi-star-fill text-warning" style="font-size:11px;"></i>
+            <div class="progress flex-1" style="height:8px;border-radius:4px;">
+              <div class="progress-bar bg-warning" style="width:22%;"></div>
+            </div>
+            <span style="width:30px;color:var(--pl-text-muted);">22%</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 mb-2" style="font-size:12.5px;">
+            <span style="width:20px;text-align:right;color:var(--pl-text-muted);">3</span>
+            <i class="bi bi-star-fill text-warning" style="font-size:11px;"></i>
+            <div class="progress flex-1" style="height:8px;border-radius:4px;">
+              <div class="progress-bar bg-warning" style="width:7%;"></div>
+            </div>
+            <span style="width:30px;color:var(--pl-text-muted);">7%</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 mb-2" style="font-size:12.5px;">
+            <span style="width:20px;text-align:right;color:var(--pl-text-muted);">2</span>
+            <i class="bi bi-star-fill text-warning" style="font-size:11px;"></i>
+            <div class="progress flex-1" style="height:8px;border-radius:4px;">
+              <div class="progress-bar bg-warning" style="width:2%;"></div>
+            </div>
+            <span style="width:30px;color:var(--pl-text-muted);">2%</span>
+          </div>
+          <div class="d-flex align-items-center gap-2" style="font-size:12.5px;">
+            <span style="width:20px;text-align:right;color:var(--pl-text-muted);">1</span>
+            <i class="bi bi-star-fill text-warning" style="font-size:11px;"></i>
+            <div class="progress flex-1" style="height:8px;border-radius:4px;">
+              <div class="progress-bar bg-warning" style="width:1%;"></div>
+            </div>
+            <span style="width:30px;color:var(--pl-text-muted);">1%</span>
+          </div>
+          
+        </div>
+        <!-- Recent Review -->
+        <div class="divider"></div>
+        <div class="p-3 rounded" style="background:var(--pl-bg);border:1px solid var(--pl-border);">
+          <div class="d-flex justify-content-between mb-1">
+            <div class="fw-semibold" style="font-size:13px;">Tata Motors Ltd.</div>
+            <span class="star-rating" style="font-size:12px;">★★★★★</span>
+          </div>
+          <p class="mb-0" style="font-size:12.5px;color:var(--pl-text-muted);">"Excellent quality parts delivered on time. Packaging was great. Will definitely order again!"</p>
+          <div style="font-size:11px;color:var(--pl-text-light);margin-top:6px;">March 20, 2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- QUOTE SUBMISSION MODAL -->
+<div class="modal fade" id="quoteModal" tabindex="-1" aria-labelledby="quoteModalLabel">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="quoteModalLabel">
+          <i class="bi bi-send me-2 text-primary"></i>Submit Quote – RFQ from Tata Motors
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <!-- RFQ Summary -->
+        <div class="mb-4 p-3 rounded" style="background:var(--pl-primary-soft);border:1.5px solid rgba(21,101,192,0.2);">
+          <div class="row g-2" style="font-size:13px;">
+            <div class="col-md-3"><span class="text-muted">Part:</span> <strong>Steel Bolt M12</strong></div>
+            <div class="col-md-3"><span class="text-muted">Qty:</span> <strong>2,000 pcs</strong></div>
+            <div class="col-md-3"><span class="text-muted">Budget:</span> <strong>₹25/unit</strong></div>
+            <div class="col-md-3"><span class="text-muted">Required By:</span> <strong>10 Apr 2025</strong></div>
+          </div>
+        </div>
+        <form id="quoteForm">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Unit Price (₹) <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" placeholder="Price per unit" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Total Quote Value</label>
+              <input type="text" class="form-control bg-light" placeholder="Auto calculated" readonly>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Valid Until <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Delivery Time <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input type="number" class="form-control" placeholder="e.g. 7" required>
+                <select class="form-select" style="max-width:100px;">
+                  <option>Days</option>
+                  <option>Weeks</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Payment Terms</label>
+              <select class="form-select">
+                <option>30 Days Net</option>
+                <option>15 Days Net</option>
+                <option>Advance Payment</option>
+                <option>50% Advance + 50% on Delivery</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Additional Notes</label>
+              <textarea class="form-control" rows="2" placeholder="Quality certifications, packaging details, etc."></textarea>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Attach Quote Document</label>
+              <input type="file" class="form-control" accept=".pdf,.xlsx,.docx">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pl-primary">
+          <i class="bi bi-send me-1"></i> Submit Quote
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD INVENTORY MODAL -->
+<div class="modal fade" id="addInventoryModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-plus-circle me-2 text-primary"></i>Add Inventory Item</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Part Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" required placeholder="e.g. Steel Bolt M12">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">SKU / Part Number</label>
+              <input type="text" class="form-control" placeholder="Auto or manual">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Category</label>
+              <select class="form-select">
+                <option>Fasteners</option>
+                <option>Sheet Metal</option>
+                <option>Castings</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Quantity <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" required placeholder="0" min="0">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Unit</label>
+              <select class="form-select">
+                <option>pcs</option>
+                <option>kg</option>
+                <option>m</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Unit Price (₹) <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" required placeholder="0.00" step="0.01">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Min Stock Alert</label>
+              <input type="number" class="form-control" placeholder="e.g. 100">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pl-primary"><i class="bi bi-plus me-1"></i>Add Item</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="dashboard-section" data-role="logistics" style="display:none;">
+
+    <div class="page-header mb-4">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <h4 class="page-title mb-1">Logistics Dashboard</h4>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Logistics Dashboard</li>
+            </ol>
+          </nav>
+        </div>
+        <div>
+          <button class="btn-pl-primary"><i class="bi bi-download me-1"></i>Export Report</button>
+        </div>
+      </div>
+    </div>
+    <!-- KPI Cards -->
+<div class="row g-4 section-gap">
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#1565C0;--kpi-soft-color:#DBEAFE;">
+      <div class="kpi-icon"><i class="bi bi-truck"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Active Shipments</div>
+        <div class="kpi-value">42</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>8 dispatched today</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#16A34A;--kpi-soft-color:#DCFCE7;">
+      <div class="kpi-icon"><i class="bi bi-check2-all"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Delivered (MTD)</div>
+        <div class="kpi-value">218</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>96.2% on-time rate</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#D97706;--kpi-soft-color:#FEF3C7;">
+      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Pending Requests</div>
+        <div class="kpi-value">15</div>
+        <div class="kpi-delta negative"><i class="bi bi-arrow-up-short"></i>Awaiting pickup</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#DC2626;--kpi-soft-color:#FEE2E2;">
+      <div class="kpi-icon"><i class="bi bi-exclamation-triangle"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Delayed</div>
+        <div class="kpi-value">4</div>
+        <div class="kpi-delta negative"><i class="bi bi-arrow-up-short"></i>Needs action</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Shipment Requests Table + Notification Panel -->
+<div class="row g-4 section-gap">
+
+  <!-- Shipment Requests Table -->
+  <div class="col-xl-8">
+    <div class="pl-table-wrapper">
+      <div class="pl-table-toolbar">
+        <h6 class="mb-0 fw-bold"><i class="bi bi-truck me-2 text-primary"></i>Shipment Requests</h6>
+        <div class="ms-auto d-flex gap-2">
+          <input type="text" class="form-control form-control-sm" placeholder="Search..." style="width:160px;" data-table-search="shipmentTable">
+          <select class="form-select form-select-sm" style="width:auto;">
+            <option>All Status</option>
+            <option>Pending</option>
+            <option>In Transit</option>
+            <option>Delivered</option>
+            <option>Delayed</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="pl-table" id="shipmentTable">
+          <thead>
+            <tr>
+              <th data-sort="id">Ship ID</th>
+              <th data-sort="order">Order Ref</th>
+              <th>From → To</th>
+              <th data-sort="weight">Weight</th>
+              <th data-sort="eta">ETA</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-family:monospace;font-size:12px;">SHP-772</td>
+              <td style="font-family:monospace;font-size:12px;">#ORD-4892</td>
+              <td><span style="font-size:12.5px;">Pune <i class="bi bi-arrow-right text-muted mx-1"></i> Chennai</span></td>
+              <td>380 kg</td>
+              <td>02 Apr 2025</td>
+              <td><span class="status-badge status-transit">In Transit</span></td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#trackModal">
+                  <i class="bi bi-geo-alt me-1"></i>Track
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-family:monospace;font-size:12px;">SHP-771</td>
+              <td style="font-family:monospace;font-size:12px;">#ORD-4885</td>
+              <td><span style="font-size:12.5px;">Ahmedabad <i class="bi bi-arrow-right text-muted mx-1"></i> Mumbai</span></td>
+              <td>220 kg</td>
+              <td>01 Apr 2025</td>
+              <td><span class="status-badge status-pending">Pending Pickup</span></td>
+              <td>
+                <button class="btn btn-sm btn-outline-success">
+                  <i class="bi bi-check2 me-1"></i>Accept
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-family:monospace;font-size:12px;">SHP-768</td>
+              <td style="font-family:monospace;font-size:12px;">#ORD-4871</td>
+              <td><span style="font-size:12.5px;">Chennai <i class="bi bi-arrow-right text-muted mx-1"></i> Delhi</span></td>
+              <td>1,200 kg</td>
+              <td>28 Mar 2025</td>
+              <td><span class="status-badge status-rejected">Delayed</span></td>
+              <td>
+                <button class="btn btn-sm btn-outline-warning text-warning" data-bs-toggle="modal" data-bs-target="#trackModal">
+                  <i class="bi bi-exclamation-triangle me-1"></i>Update
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-family:monospace;font-size:12px;">SHP-765</td>
+              <td style="font-family:monospace;font-size:12px;">#ORD-4860</td>
+              <td><span style="font-size:12.5px;">Mumbai <i class="bi bi-arrow-right text-muted mx-1"></i> Hyderabad</span></td>
+              <td>670 kg</td>
+              <td>30 Mar 2025</td>
+              <td><span class="status-badge status-approved">Delivered</span></td>
+              <td><button class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-text me-1"></i>POD</button></td>
+            </tr>
+            <tr>
+              <td style="font-family:monospace;font-size:12px;">SHP-763</td>
+              <td style="font-family:monospace;font-size:12px;">#ORD-4855</td>
+              <td><span style="font-size:12.5px;">Jaipur <i class="bi bi-arrow-right text-muted mx-1"></i> Pune</span></td>
+              <td>90 kg</td>
+              <td>03 Apr 2025</td>
+              <td><span class="status-badge status-transit">In Transit</span></td>
+              <td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#trackModal"><i class="bi bi-geo-alt me-1"></i>Track</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Panel -->
+  <div class="col-xl-4">
+    <div class="pl-card h-100">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-bell me-2 text-primary"></i>Notifications</h6>
+        <a href="#" class="text-primary small">Mark all read</a>
+      </div>
+      <div class="card-body-custom p-0">
+        <!-- Notification Item -->
+        <div class="notif-item unread">
+          <div class="notif-icon bg-danger-soft">
+            <i class="bi bi-exclamation-triangle text-danger"></i>
+          </div>
+          <div class="notif-content">
+            <p class="mb-0 fw-medium" style="font-size:13px;">Shipment SHP-768 is delayed</p>
+            <small class="text-muted">Route Chennai → Delhi blocked. Rerouting needed.</small>
+            <div style="font-size:11px;color:var(--pl-text-light);margin-top:3px;">15 min ago</div>
+          </div>
+        </div>
+        <div class="notif-item unread">
+          <div class="notif-icon bg-success-soft">
+            <i class="bi bi-check-circle text-success"></i>
+          </div>
+          <div class="notif-content">
+            <p class="mb-0 fw-medium" style="font-size:13px;">SHP-765 delivered successfully</p>
+            <small class="text-muted">Mumbai → Hyderabad. POD received.</small>
+            <div style="font-size:11px;color:var(--pl-text-light);margin-top:3px;">1 hr ago</div>
+          </div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon bg-primary-soft">
+            <i class="bi bi-truck text-primary"></i>
+          </div>
+          <div class="notif-content">
+            <p class="mb-0 fw-medium" style="font-size:13px;">New pickup request – SHP-771</p>
+            <small class="text-muted">220 kg from Ahmedabad to Mumbai</small>
+            <div style="font-size:11px;color:var(--pl-text-light);margin-top:3px;">3 hrs ago</div>
+          </div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon bg-warning-soft">
+            <i class="bi bi-cloud-rain text-warning"></i>
+          </div>
+          <div class="notif-content">
+            <p class="mb-0 fw-medium" style="font-size:13px;">Weather alert – NH48 corridor</p>
+            <small class="text-muted">Heavy rain forecast. Delays possible for 3 shipments.</small>
+            <div style="font-size:11px;color:var(--pl-text-light);margin-top:3px;">5 hrs ago</div>
+          </div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon bg-info-soft">
+            <i class="bi bi-geo-alt text-info"></i>
+          </div>
+          <div class="notif-content">
+            <p class="mb-0 fw-medium" style="font-size:13px;">SHP-772 checkpoint passed</p>
+            <small class="text-muted">Crossed Nagpur toll. ETA unchanged.</small>
+            <div style="font-size:11px;color:var(--pl-text-light);margin-top:3px;">Yesterday</div>
+          </div>
+        </div>
+        <div class="p-3 text-center border-top">
+          <a href="/logistics/notifications" class="text-primary small fw-medium">View all notifications →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Delivery Tracking Progress UI -->
+<div class="section-gap">
+  <div class="pl-card">
+    <div class="card-header-custom">
+      <h6 class="card-title-custom"><i class="bi bi-geo-alt me-2 text-primary"></i>Live Delivery Tracking – SHP-772</h6>
+      <span class="status-badge status-transit">In Transit</span>
+    </div>
+    <div class="card-body-custom">
+      <div class="row g-4">
+        <div class="col-md-8">
+          <!-- Route Progress Bar -->
+          <div class="mb-4">
+            <div class="d-flex justify-content-between mb-2" style="font-size:12.5px;">
+              <span class="fw-semibold text-primary">Pune</span>
+              <span class="text-muted">→ 65% of route →</span>
+              <span class="fw-semibold">Chennai</span>
+            </div>
+            <div class="progress" style="height:14px;border-radius:7px;">
+              <div class="progress-bar bg-primary" style="width:65%;" role="progressbar">
+                <span style="font-size:11px;">840 km traveled</span>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between mt-1" style="font-size:11px;color:var(--pl-text-muted);">
+              <span>Departed: 29 Mar 10:00 AM</span>
+              <span>ETA: 02 Apr 06:00 PM</span>
+            </div>
+          </div>
+          <!-- Timeline -->
+          <div class="tracking-timeline">
+            <div class="tracking-step">
+              <div class="tracking-dot done"><i class="bi bi-check text-white" style="font-size:9px;"></i></div>
+              <div class="tracking-step-title">Order Picked Up – Pune Warehouse</div>
+              <div class="tracking-step-info">29 Mar 2025 • 10:15 AM • Driver: Ramesh Singh</div>
+            </div>
+            <div class="tracking-step">
+              <div class="tracking-dot done"><i class="bi bi-check text-white" style="font-size:9px;"></i></div>
+              <div class="tracking-step-title">Departed Pune – Maharashtra</div>
+              <div class="tracking-step-info">29 Mar 2025 • 11:00 AM</div>
+            </div>
+            <div class="tracking-step">
+              <div class="tracking-dot done"><i class="bi bi-check text-white" style="font-size:9px;"></i></div>
+              <div class="tracking-step-title">Nagpur Checkpoint Crossed</div>
+              <div class="tracking-step-info">30 Mar 2025 • 08:30 AM</div>
+            </div>
+            <div class="tracking-step">
+              <div class="tracking-dot active"></div>
+              <div class="tracking-step-title">Currently Near Vijayawada – Andhra Pradesh</div>
+              <div class="tracking-step-info">31 Mar 2025 • 04:00 PM (Live)</div>
+            </div>
+            <div class="tracking-step">
+              <div class="tracking-dot"></div>
+              <div class="tracking-step-title">Arrival at Chennai Warehouse</div>
+              <div class="tracking-step-info">Expected: 02 Apr 2025 • 06:00 PM</div>
+            </div>
+            <div class="tracking-step">
+              <div class="tracking-dot"></div>
+              <div class="tracking-step-title">Final Delivery to Customer</div>
+              <div class="tracking-step-info">Expected: 03 Apr 2025 • 10:00 AM</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <!-- Shipment Details Card -->
+          <div class="p-3 rounded" style="background:var(--pl-bg);border:1.5px solid var(--pl-border);">
+            <h6 class="fw-bold mb-3">Shipment Details</h6>
+            <table style="font-size:13px;width:100%;">
+              <tr><td class="text-muted pb-2">Shipment ID</td><td class="fw-medium pb-2 text-end">SHP-772</td></tr>
+              <tr><td class="text-muted pb-2">Order Ref</td><td class="fw-medium pb-2 text-end text-primary">#ORD-4892</td></tr>
+              <tr><td class="text-muted pb-2">Item</td><td class="fw-medium pb-2 text-end">Steel Bolt M12</td></tr>
+              <tr><td class="text-muted pb-2">Weight</td><td class="fw-medium pb-2 text-end">380 kg</td></tr>
+              <tr><td class="text-muted pb-2">Packages</td><td class="fw-medium pb-2 text-end">24 boxes</td></tr>
+              <tr><td class="text-muted pb-2">Driver</td><td class="fw-medium pb-2 text-end">Ramesh Singh</td></tr>
+              <tr><td class="text-muted pb-2">Vehicle No.</td><td class="fw-medium pb-2 text-end">MH-12 AB 4521</td></tr>
+              <tr><td class="text-muted">Distance</td><td class="fw-medium text-end">1,292 km</td></tr>
+            </table>
+            <div class="divider"></div>
+            <button class="btn-pl-outline w-100 justify-content-center">
+              <i class="bi bi-telephone me-1"></i> Contact Driver
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tracking Modal (for table Track buttons) -->
+<div class="modal fade" id="trackModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-geo-alt me-2 text-primary"></i>Quick Track</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="tracking-timeline">
+          <div class="tracking-step">
+            <div class="tracking-dot done"><i class="bi bi-check text-white" style="font-size:9px;"></i></div>
+            <div class="tracking-step-title">Picked Up</div>
+            <div class="tracking-step-info">29 Mar 2025</div>
+          </div>
+          <div class="tracking-step">
+            <div class="tracking-dot active"></div>
+            <div class="tracking-step-title">In Transit</div>
+            <div class="tracking-step-info">Current Location: Vijayawada</div>
+          </div>
+          <div class="tracking-step">
+            <div class="tracking-dot"></div>
+            <div class="tracking-step-title">Expected Delivery</div>
+            <div class="tracking-step-info">02 Apr 2025</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="dashboard-section" data-role="designer" style="display:none;">
+<style>
+  /* Chat UI Specific */
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 420px;
+  }
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    background: var(--pl-bg);
+  }
+  .chat-bubble {
+    max-width: 75%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .chat-bubble.received {
+    background: white;
+    border: 1px solid var(--pl-border);
+    border-bottom-left-radius: 4px;
+    margin-right: auto;
+  }
+  .chat-bubble.sent {
+    background: var(--pl-primary);
+    color: white;
+    border-bottom-right-radius: 4px;
+    margin-left: auto;
+  }
+  .chat-time {
+    font-size: 10px;
+    opacity: 0.6;
+    margin-top: 4px;
+  }
+  .chat-input-area {
+    border-top: 1.5px solid var(--pl-border);
+    padding: 12px;
+    background: white;
+  }
+  /* Version History */
+  .version-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--pl-border);
+  }
+  .version-item:last-child { border-bottom: none; }
+  .version-number {
+    background: var(--pl-primary-soft);
+    color: var(--pl-primary);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+</style>
+
+    <div class="page-header mb-4">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <h4 class="page-title mb-1">Part Designer Dashboard</h4>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Part Designer Dashboard</li>
+            </ol>
+          </nav>
+        </div>
+        <div>
+          <button class="btn-pl-primary"><i class="bi bi-download me-1"></i>Export Report</button>
+        </div>
+      </div>
+    </div>
+    <!-- KPI Cards -->
+<div class="row g-4 section-gap">
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#1565C0;--kpi-soft-color:#DBEAFE;">
+      <div class="kpi-icon"><i class="bi bi-folder2-open"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Active Projects</div>
+        <div class="kpi-value">12</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>3 new this week</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#16A34A;--kpi-soft-color:#DCFCE7;">
+      <div class="kpi-icon"><i class="bi bi-file-earmark-check"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Files Uploaded</div>
+        <div class="kpi-value">84</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>12 this month</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#D97706;--kpi-soft-color:#FEF3C7;">
+      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Revisions</div>
+        <div class="kpi-value">38</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>Across 12 projects</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#0891B2;--kpi-soft-color:#CFFAFE;">
+      <div class="kpi-icon"><i class="bi bi-chat-dots"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Unread Messages</div>
+        <div class="kpi-value">7</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>2 from clients today</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- File Upload + Project Requests -->
+<div class="row g-4 section-gap">
+
+  <!-- File Upload UI -->
+  <div class="col-xl-5">
+    <div class="pl-card h-100">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-cloud-upload me-2 text-primary"></i>Upload Design Files</h6>
+      </div>
+      <div class="card-body-custom">
+        <!-- Drag & Drop Zone -->
+        <div class="upload-zone" id="designUploadZone">
+          <input type="file" class="d-none" id="designFilesInput" multiple accept=".dwg,.dxf,.step,.stl,.pdf,.stp,.iges">
+          <i class="bi bi-cloud-upload upload-icon"></i>
+          <h6 class="fw-semibold mt-2 mb-1">Drag & Drop Files Here</h6>
+          <p class="text-muted mb-3" style="font-size:13px;">or click to browse your computer</p>
+          <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
+            <span class="badge" style="background:var(--pl-bg);color:var(--pl-text-muted);border:1px solid var(--pl-border);">DWG</span>
+            <span class="badge" style="background:var(--pl-bg);color:var(--pl-text-muted);border:1px solid var(--pl-border);">DXF</span>
+            <span class="badge" style="background:var(--pl-bg);color:var(--pl-text-muted);border:1px solid var(--pl-border);">STEP</span>
+            <span class="badge" style="background:var(--pl-bg);color:var(--pl-text-muted);border:1px solid var(--pl-border);">STL</span>
+            <span class="badge" style="background:var(--pl-bg);color:var(--pl-text-muted);border:1px solid var(--pl-border);">IGES</span>
+            <span class="badge" style="background:var(--pl-bg);color:var(--pl-text-muted);border:1px solid var(--pl-border);">PDF</span>
+          </div>
+          <div class="upload-hint text-muted" style="font-size:12px;">Max 25MB per file</div>
+        </div>
+
+        <!-- Uploaded Files List -->
+        <div class="file-list mt-2" id="uploadedFilesList"></div>
+
+        <!-- Attach to Project -->
+        <div class="mt-3">
+          <label class="form-label">Attach to Project</label>
+          <select class="form-select mb-2">
+            <option value="">Select project...</option>
+            <option>PRJ-2048 – Gear Box Housing</option>
+            <option>PRJ-2041 – Engine Mount Bracket</option>
+            <option>PRJ-2035 – Hydraulic Valve Body</option>
+          </select>
+          <label class="form-label">Version Notes</label>
+          <textarea class="form-control mb-3" rows="2" placeholder="e.g. Updated tolerance for bore diameter, Rev C"></textarea>
+          <button class="btn-pl-primary w-100 justify-content-center">
+            <i class="bi bi-cloud-upload me-1"></i> Upload Files
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Requests + Version History stacked -->
+  <div class="col-xl-7">
+
+    <!-- Project Requests List -->
+    <div class="pl-card mb-4">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-clipboard-list me-2 text-primary"></i>Project Requests</h6>
+        <span class="status-badge status-pending">5 Pending</span>
+      </div>
+      <div class="card-body-custom p-0">
+        
+        <div class="p-3 border-bottom" style="cursor:pointer;" onmouseover="this.style.background='var(--pl-bg)'" onmouseout="this.style.background=''">
+          <div class="d-flex align-items-start justify-content-between">
+            <div>
+              <div class="fw-semibold" style="font-size:13.5px;">PRJ-2051 – Custom Gear Housing Design</div>
+              <div style="font-size:12px;color:var(--pl-text-muted);">
+                Tata Motors Ltd. • Requested: 30 Mar 2025 • Deadline: 15 Apr 2025
+              </div>
+              <div class="mt-1 d-flex gap-2 flex-wrap">
+                <span class="badge" style="background:var(--pl-primary-soft);color:var(--pl-primary);font-size:10px;">SolidWorks</span>
+                <span class="badge bg-light border text-dark" style="font-size:10px;">DXF + PDF</span>
+              </div>
+            </div>
+            <span class="status-badge status-pending ms-2 flex-shrink-0">New</span>
+          </div>
+        </div>
+        <div class="p-3 border-bottom" style="cursor:pointer;" onmouseover="this.style.background='var(--pl-bg)'" onmouseout="this.style.background=''">
+          <div class="d-flex align-items-start justify-content-between">
+            <div>
+              <div class="fw-semibold" style="font-size:13.5px;">PRJ-2049 – Engine Mount Bracket Rev D</div>
+              <div style="font-size:12px;color:var(--pl-text-muted);">
+                Bajaj Auto Ltd. • Requested: 28 Mar 2025 • Deadline: 10 Apr 2025
+              </div>
+              <div class="mt-1">
+                <span class="badge bg-light border text-dark" style="font-size:10px;">IGES + STEP</span>
+              </div>
+            </div>
+            <span class="status-badge status-transit ms-2 flex-shrink-0">In Progress</span>
+          </div>
+        </div>
+        <div class="p-3" style="cursor:pointer;" onmouseover="this.style.background='var(--pl-bg)'" onmouseout="this.style.background=''">
+          <div class="d-flex align-items-start justify-content-between">
+            <div>
+              <div class="fw-semibold" style="font-size:13.5px;">PRJ-2047 – Hydraulic Valve 3D Model</div>
+              <div style="font-size:12px;color:var(--pl-text-muted);">
+                Maruti Suzuki India • Requested: 25 Mar 2025 • Deadline: 05 Apr 2025
+              </div>
+              <div class="mt-1">
+                <span class="badge" style="background:var(--pl-danger-soft);color:var(--pl-danger);font-size:10px;">Urgent</span>
+                <span class="badge bg-light border text-dark ms-1" style="font-size:10px;">STL + PDF</span>
+              </div>
+            </div>
+            <span class="status-badge status-approved ms-2 flex-shrink-0">Review</span>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Version History UI -->
+    <div class="pl-card">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-clock-history me-2 text-primary"></i>Version History – PRJ-2048</h6>
+        <select class="form-select form-select-sm" style="width:auto;">
+          <option>PRJ-2048 – Gear Box Housing</option>
+          <option>PRJ-2041 – Engine Mount</option>
+        </select>
+      </div>
+      <div class="card-body-custom">
+        
+        <div class="version-item">
+          <div class="version-number">v3.2</div>
+          <div class="flex-1">
+            <div class="fw-medium" style="font-size:13.5px;">Gear_Housing_Rev3_2.dwg <span class="badge bg-primary ms-1" style="font-size:10px;">Current</span></div>
+            <div style="font-size:12px;color:var(--pl-text-muted);">Updated bore diameter tolerance: ±0.02mm • 30 Mar 2025 • You</div>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-primary" title="Download"><i class="bi bi-download"></i></button>
+          </div>
+        </div>
+        <div class="version-item">
+          <div class="version-number">v3.1</div>
+          <div class="flex-1">
+            <div class="fw-medium" style="font-size:13.5px;">Gear_Housing_Rev3_1.dwg</div>
+            <div style="font-size:12px;color:var(--pl-text-muted);">Wall thickness changed per client feedback • 27 Mar 2025 • You</div>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-secondary" title="Download"><i class="bi bi-download"></i></button>
+            <button class="btn btn-sm btn-outline-warning" title="Restore"><i class="bi bi-arrow-counterclockwise"></i></button>
+          </div>
+        </div>
+        <div class="version-item">
+          <div class="version-number">v3.0</div>
+          <div class="flex-1">
+            <div class="fw-medium" style="font-size:13.5px;">Gear_Housing_Rev3_0.dwg</div>
+            <div style="font-size:12px;color:var(--pl-text-muted);">Major redesign – Draft angle corrections • 22 Mar 2025 • You</div>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-download"></i></button>
+            <button class="btn btn-sm btn-outline-warning"><i class="bi bi-arrow-counterclockwise"></i></button>
+          </div>
+        </div>
+        <div class="version-item">
+          <div class="version-number">v2.0</div>
+          <div class="flex-1">
+            <div class="fw-medium" style="font-size:13.5px;">Gear_Housing_Rev2_0.dwg</div>
+            <div style="font-size:12px;color:var(--pl-text-muted);">Initial draft submission • 15 Mar 2025 • You</div>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-download"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+  </div><!-- /col -->
+</div>
+
+<!-- Chat Interface -->
+<div class="section-gap">
+  <div class="pl-card" style="max-width:700px;">
+    <div class="card-header-custom">
+      <div class="d-flex align-items-center gap-2">
+        <div class="avatar-sm" style="background:linear-gradient(135deg,#1565C0,#42A5F5);">TM</div>
+        <div>
+          <h6 class="card-title-custom mb-0">Tata Motors – Gear Housing Project</h6>
+          <div style="font-size:11px;color:var(--pl-success);font-weight:600;"><i class="bi bi-circle-fill" style="font-size:8px;"></i> Online</div>
+        </div>
+      </div>
+    </div>
+    <div class="chat-container">
+      <div class="chat-messages" id="chatMessages">
+
+        <!-- Received Message -->
+        <div>
+          <div class="chat-bubble received">
+            Hi, can you revise the bore diameter tolerance to ±0.02mm? Our manufacturing team flagged it.
+          </div>
+          <div class="chat-time text-muted ms-1">Priya M. • 10:32 AM</div>
+        </div>
+
+        <!-- Sent Message -->
+        <div>
+          <div class="chat-bubble sent">
+            Sure! I'll update Rev 3.2 with the corrected tolerance. Should be ready by EOD.
+          </div>
+          <div class="chat-time text-end me-1" style="color:rgba(255,255,255,0.6)">You • 10:35 AM</div>
+        </div>
+
+        <!-- Received -->
+        <div>
+          <div class="chat-bubble received">
+            <i class="bi bi-paperclip me-1"></i>
+            <a href="#" class="text-primary">Gear_Housing_Specs_v3.pdf</a>
+            <div class="text-muted" style="font-size:11px;margin-top:2px;">Updated spec sheet attached</div>
+          </div>
+          <div class="chat-time text-muted ms-1">Priya M. • 10:40 AM</div>
+        </div>
+
+        <!-- Sent -->
+        <div>
+          <div class="chat-bubble sent">
+            Got it, reviewing the spec sheet now. I'll upload the revised file shortly.
+          </div>
+          <div class="chat-time text-end me-1" style="color:rgba(255,255,255,0.6)">You • 10:42 AM</div>
+        </div>
+
+      </div>
+      <!-- Chat Input -->
+      <div class="chat-input-area">
+        <div class="d-flex gap-2">
+          <button class="btn btn-light border" title="Attach file">
+            <i class="bi bi-paperclip"></i>
+          </button>
+          <input type="text" class="form-control" id="chatInput" placeholder="Type a message..." autocomplete="off">
+          <button class="btn-pl-primary" onclick="sendChatMessage()" title="Send">
+            <i class="bi bi-send"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="dashboard-section" data-role="distributor" style="display:none;">
+
+    <div class="page-header mb-4">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <h4 class="page-title mb-1">Distributor Dashboard</h4>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Distributor Dashboard</li>
+            </ol>
+          </nav>
+        </div>
+        <div>
+          <button class="btn-pl-primary" data-bs-toggle="modal" data-bs-target="#uploadInventoryModal">
+  <i class="bi bi-upload me-1"></i> Upload Inventory
+</button>
+        </div>
+      </div>
+    </div>
+    <!-- KPI Cards -->
+<div class="row g-4 section-gap">
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#1565C0;--kpi-soft-color:#DBEAFE;">
+      <div class="kpi-icon"><i class="bi bi-boxes"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Total SKUs Listed</div>
+        <div class="kpi-value">2,840</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>+120 this month</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#16A34A;--kpi-soft-color:#DCFCE7;">
+      <div class="kpi-icon"><i class="bi bi-diagram-3"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Matched Requests</div>
+        <div class="kpi-value">94</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>18 this week</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#D97706;--kpi-soft-color:#FEF3C7;">
+      <div class="kpi-icon"><i class="bi bi-tags"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Active Bundles</div>
+        <div class="kpi-value">12</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>3 expire this week</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#0891B2;--kpi-soft-color:#CFFAFE;">
+      <div class="kpi-icon"><i class="bi bi-currency-rupee"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Sales (MTD)</div>
+        <div class="kpi-value">₹42.8L</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>+19.3% vs last month</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Market Trend Chart + Discount Bundle Cards -->
+<div class="row g-4 section-gap">
+
+  <!-- Market Trend Chart -->
+  <div class="col-xl-8">
+    <div class="pl-card">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-graph-up me-2 text-primary"></i>Market Demand Trends</h6>
+        <div class="d-flex gap-2">
+          <select class="form-select form-select-sm" style="width:auto;">
+            <option>All Categories</option>
+            <option>Fasteners</option>
+            <option>Sheet Metal</option>
+            <option>Castings</option>
+            <option>Plastics</option>
+          </select>
+          <select class="form-select form-select-sm" style="width:auto;">
+            <option>Last 12 Months</option>
+            <option>Last 6 Months</option>
+            <option>This Quarter</option>
+          </select>
+        </div>
+      </div>
+      <div class="card-body-custom">
+        <div class="chart-container" style="height:280px;">
+          <canvas id="marketTrendChart"></canvas>
+        </div>
+        <!-- Trend Insights -->
+        <div class="row g-3 mt-3">
+          <div class="col-md-4">
+            <div class="p-3 rounded" style="background:var(--pl-success-soft);border:1px solid rgba(22,163,74,0.2);">
+              <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--pl-success);font-weight:700;">Trending Up</div>
+              <div style="font-size:14px;font-weight:700;margin-top:4px;">Fasteners</div>
+              <div style="font-size:12px;color:var(--pl-text-muted);">+32% demand surge</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 rounded" style="background:var(--pl-warning-soft);border:1px solid rgba(217,119,6,0.2);">
+              <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--pl-warning);font-weight:700;">Stable</div>
+              <div style="font-size:14px;font-weight:700;margin-top:4px;">Sheet Metal</div>
+              <div style="font-size:12px;color:var(--pl-text-muted);">±5% variation</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 rounded" style="background:var(--pl-danger-soft);border:1px solid rgba(220,38,38,0.2);">
+              <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--pl-danger);font-weight:700;">Declining</div>
+              <div style="font-size:14px;font-weight:700;margin-top:4px;">Castings</div>
+              <div style="font-size:12px;color:var(--pl-text-muted);">-12% this quarter</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Discount Bundle Cards -->
+  <div class="col-xl-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h6 class="fw-bold mb-0"><i class="bi bi-tags me-2 text-primary"></i>Discount Bundles</h6>
+      <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#createBundleModal">
+        <i class="bi bi-plus me-1"></i>New Bundle
+      </button>
+    </div>
+
+    <!-- Bundle Card 1 -->
+    <div class="pl-card mb-3">
+      <div class="card-body-custom">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <div class="fw-bold" style="font-size:14px;">Fastener Megapack</div>
+          <span class="badge" style="background:rgba(220,38,38,0.12);color:var(--pl-danger);font-size:12px;font-weight:700;">-18% OFF</span>
+        </div>
+        <div class="text-muted mb-3" style="font-size:12.5px;">M8, M10, M12 bolts + washers + hex nuts – Mixed pack 5,000 units+</div>
+        <div class="row g-2 mb-3" style="font-size:12px;">
+          <div class="col-6"><span class="text-muted">Original:</span> <span style="text-decoration:line-through;">₹1,25,000</span></div>
+          <div class="col-6"><span class="text-muted">Bundle Price:</span> <strong class="text-success">₹1,02,500</strong></div>
+          <div class="col-6"><span class="text-muted">Units Sold:</span> 48 bundles</div>
+          <div class="col-6"><span class="text-muted">Expires:</span> 05 Apr 2025</div>
+        </div>
+        <div class="progress mb-2" style="height:4px;border-radius:2px;">
+          <div class="progress-bar bg-danger" style="width:72%;"></div>
+        </div>
+        <div class="d-flex justify-content-between" style="font-size:11px;color:var(--pl-text-muted);">
+          <span>72% of stock allocated</span>
+          <button class="btn btn-link btn-sm p-0 text-danger" style="font-size:11px;">End Bundle</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bundle Card 2 -->
+    <div class="pl-card mb-3">
+      <div class="card-body-custom">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <div class="fw-bold" style="font-size:14px;">Sheet Metal Starter Kit</div>
+          <span class="badge" style="background:rgba(21,101,192,0.12);color:var(--pl-primary);font-size:12px;font-weight:700;">-12% OFF</span>
+        </div>
+        <div class="text-muted mb-3" style="font-size:12.5px;">All gauges: 1mm, 2mm, 3mm – 100 sheets of each</div>
+        <div class="row g-2 mb-3" style="font-size:12px;">
+          <div class="col-6"><span class="text-muted">Bundle Price:</span> <strong class="text-success">₹44,000</strong></div>
+          <div class="col-6"><span class="text-muted">Expires:</span> 10 Apr 2025</div>
+        </div>
+        <div class="progress mb-2" style="height:4px;border-radius:2px;">
+          <div class="progress-bar bg-primary" style="width:35%;"></div>
+        </div>
+        <div class="d-flex justify-content-between" style="font-size:11px;color:var(--pl-text-muted);">
+          <span>35% of stock allocated</span>
+          <button class="btn btn-link btn-sm p-0 text-danger" style="font-size:11px;">End Bundle</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bundle Card 3 -->
+    <div class="pl-card">
+      <div class="card-body-custom">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <div class="fw-bold" style="font-size:14px;">Rubber Seals Combo</div>
+          <span class="badge" style="background:rgba(22,163,74,0.12);color:var(--pl-success);font-size:12px;font-weight:700;">-10% OFF</span>
+        </div>
+        <div class="text-muted mb-2" style="font-size:12.5px;">O-rings + Gaskets – Assorted 10,000 unit lot</div>
+        <div class="row g-2" style="font-size:12px;">
+          <div class="col-6"><span class="text-muted">Bundle Price:</span> <strong class="text-success">₹27,000</strong></div>
+          <div class="col-6"><span class="text-muted">Expires:</span> 20 Apr 2025</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Inventory Upload UI + Matching Requests -->
+<div class="row g-4 section-gap">
+
+  <!-- Inventory Upload -->
+  <div class="col-xl-5">
+    <div class="pl-card">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-upload me-2 text-primary"></i>Bulk Inventory Upload</h6>
+      </div>
+      <div class="card-body-custom">
+        <div class="upload-zone mb-3">
+          <input type="file" class="d-none" id="inventoryFile" accept=".csv,.xlsx,.xls">
+          <i class="bi bi-file-spreadsheet upload-icon"></i>
+          <h6 class="fw-semibold mt-2 mb-1">Upload Inventory Sheet</h6>
+          <p class="text-muted mb-3" style="font-size:13px;">CSV or Excel format – one SKU per row</p>
+          <div class="file-list" id="inventoryFileList"></div>
+        </div>
+
+        <!-- Template Download -->
+        <div class="d-flex align-items-center gap-2 p-2 rounded mb-3" style="background:var(--pl-bg);border:1px solid var(--pl-border);">
+          <i class="bi bi-file-earmark-excel text-success fs-4"></i>
+          <div class="flex-1">
+            <div class="fw-medium" style="font-size:13px;">Download Template</div>
+            <div style="font-size:11px;color:var(--pl-text-muted);">Use our standard Excel template</div>
+          </div>
+          <a href="#" class="btn btn-sm btn-outline-success">
+            <i class="bi bi-download me-1"></i>Download
+          </a>
+        </div>
+
+        <!-- Field Mapping Preview -->
+        <div class="mb-3">
+          <div style="font-size:12px;font-weight:600;color:var(--pl-text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Required Columns</div>
+          <div class="row g-1">
+            <div class="col-auto"><span class="badge bg-light border text-dark">SKU</span></div>
+            <div class="col-auto"><span class="badge bg-light border text-dark">Part Name</span></div>
+            <div class="col-auto"><span class="badge bg-light border text-dark">Category</span></div>
+            <div class="col-auto"><span class="badge bg-light border text-dark">Qty</span></div>
+            <div class="col-auto"><span class="badge bg-light border text-dark">Unit Price (₹)</span></div>
+            <div class="col-auto"><span class="badge bg-light border text-dark">Unit</span></div>
+          </div>
+        </div>
+        <button class="btn-pl-primary w-100 justify-content-center">
+          <i class="bi bi-upload me-1"></i> Process & Upload
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Matching Requests Panel -->
+  <div class="col-xl-7">
+    <div class="pl-card">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-diagram-3 me-2 text-primary"></i>Matching Requests</h6>
+        <span class="status-badge status-active">94 Matches Found</span>
+      </div>
+      <div class="card-body-custom p-0">
+        <div class="table-responsive">
+          <table class="pl-table mb-0">
+            <thead>
+              <tr>
+                <th>Buyer</th>
+                <th>Part Required</th>
+                <th>Qty</th>
+                <th>Budget</th>
+                <th>Your Match</th>
+                <th>Match Score</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="user-chip">
+                    <div class="avatar-sm">HM</div>
+                    <span style="font-size:13px;">Hero MotoCorp</span>
+                  </div>
+                </td>
+                <td style="font-size:12.5px;">Steel Bolt M12 × 3,000</td>
+                <td>3,000</td>
+                <td>₹30/unit</td>
+                <td>
+                  <div style="font-size:12px;">PL-1082 – Bolt M12<br><span class="text-muted">Your price: ₹27.50</span></div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center gap-1">
+                    <div class="progress flex-1" style="height:6px;border-radius:3px;min-width:60px;">
+                      <div class="progress-bar bg-success" style="width:96%;"></div>
+                    </div>
+                    <span style="font-size:12px;font-weight:700;color:var(--pl-success);">96%</span>
+                  </div>
+                </td>
+                <td>
+                  <button class="btn-approve"><i class="bi bi-send me-1"></i>Offer</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="user-chip">
+                    <div class="avatar-sm" style="background:linear-gradient(135deg,#D97706,#FCD34D);">TV</div>
+                    <span style="font-size:13px;">TVS Motors</span>
+                  </div>
+                </td>
+                <td style="font-size:12.5px;">Rubber O-Ring 50mm × 8,000</td>
+                <td>8,000</td>
+                <td>₹9/unit</td>
+                <td>
+                  <div style="font-size:12px;">PL-1125 – O-Ring 50mm<br><span class="text-muted">Your price: ₹8.75</span></div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center gap-1">
+                    <div class="progress flex-1" style="height:6px;border-radius:3px;min-width:60px;">
+                      <div class="progress-bar bg-success" style="width:90%;"></div>
+                    </div>
+                    <span style="font-size:12px;font-weight:700;color:var(--pl-success);">90%</span>
+                  </div>
+                </td>
+                <td>
+                  <button class="btn-approve"><i class="bi bi-send me-1"></i>Offer</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="user-chip">
+                    <div class="avatar-sm" style="background:linear-gradient(135deg,#0891B2,#22D3EE);">AS</div>
+                    <span style="font-size:13px;">Ashok Leyland</span>
+                  </div>
+                </td>
+                <td style="font-size:12.5px;">Aluminium Sheet 2mm × 500</td>
+                <td>500</td>
+                <td>₹160/pc</td>
+                <td>
+                  <div style="font-size:12px;">PL-1091 – Al Sheet 2mm<br><span class="text-muted">Your price: ₹145.00</span></div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center gap-1">
+                    <div class="progress flex-1" style="height:6px;border-radius:3px;min-width:60px;">
+                      <div class="progress-bar" style="width:82%;background:var(--pl-warning);"></div>
+                    </div>
+                    <span style="font-size:12px;font-weight:700;color:var(--pl-warning);">82%</span>
+                  </div>
+                </td>
+                <td>
+                  <button class="btn-approve"><i class="bi bi-send me-1"></i>Offer</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="user-chip">
+                    <div class="avatar-sm" style="background:linear-gradient(135deg,#7C3AED,#A78BFA);">MH</div>
+                    <span style="font-size:13px;">Mahindra</span>
+                  </div>
+                </td>
+                <td style="font-size:12.5px;">SS Spring Washer M8 × 12,000</td>
+                <td>12,000</td>
+                <td>₹7/unit</td>
+                <td>
+                  <div style="font-size:12px;">PL-1133 – Washer M8<br><span class="text-muted">Your price: ₹6.50</span></div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center gap-1">
+                    <div class="progress flex-1" style="height:6px;border-radius:3px;min-width:60px;">
+                      <div class="progress-bar bg-success" style="width:88%;"></div>
+                    </div>
+                    <span style="font-size:12px;font-weight:700;color:var(--pl-success);">88%</span>
+                  </div>
+                </td>
+                <td>
+                  <button class="btn-approve"><i class="bi bi-send me-1"></i>Offer</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="p-3 text-center border-top">
+          <a href="/distributor/matching" class="text-primary small fw-medium">View all 94 matching requests →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Upload Inventory Modal -->
+<div class="modal fade" id="uploadInventoryModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-upload me-2 text-primary"></i>Upload Inventory</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="upload-zone mb-3">
+          <input type="file" class="d-none" accept=".csv,.xlsx">
+          <i class="bi bi-file-spreadsheet upload-icon"></i>
+          <h6>Drop your inventory file here</h6>
+          <p class="text-muted small">CSV or Excel (.xlsx) format</p>
+          <div class="file-list"></div>
+        </div>
+        <div class="alert alert-info">
+          <i class="bi bi-info-circle me-2"></i>
+          <strong>Tip:</strong> Use our Excel template to avoid upload errors.
+          <a href="#" class="alert-link ms-1">Download Template →</a>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pl-primary"><i class="bi bi-upload me-1"></i>Upload</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create Bundle Modal -->
+<div class="modal fade" id="createBundleModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-tags me-2 text-primary"></i>Create Discount Bundle</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Bundle Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" placeholder="e.g. Summer Fastener Megapack">
+            </div>
+            <div class="col-12">
+              <label class="form-label">Select SKUs to Include</label>
+              <select class="form-select" multiple style="height:100px;">
+                <option>PL-1082 – Steel Bolt M12</option>
+                <option>PL-1104 – Hex Nut M10</option>
+                <option>PL-1133 – Spring Washer M8</option>
+                <option>PL-1125 – Rubber O-Ring 50mm</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Discount % <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input type="number" class="form-control" placeholder="e.g. 15" min="1" max="50">
+                <span class="input-group-text">%</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Bundle Expiry <span class="text-danger">*</span></label>
+              <input type="date" class="form-control">
+            </div>
+            <div class="col-12">
+              <label class="form-label">Terms & Conditions</label>
+              <textarea class="form-control" rows="2" placeholder="Minimum order qty, region, etc."></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pl-primary"><i class="bi bi-plus me-1"></i>Create Bundle</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</main>
+
+  <footer class="app-footer">
+    <span>© 2025 <strong>PartLink</strong> – B2B Industrial Platform. All rights reserved.</span>
+    <span class="ms-auto">v1.0.0 &nbsp;|&nbsp; Demo Preview</span>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="static/js/partlink.js"></script>
+<script>
+/* Charts */
+createLineChart('orderTrendChart', {
+  labels: ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],
+  datasets: [
+    { label:'Orders Placed',    data:[820,940,1020,880,1150,1280,1100,1380,1480,1250,1620,1780], color:'#1565C0', fill:'rgba(21,101,192,0.1)' },
+    { label:'Orders Fulfilled', data:[780,900,970,830,1080,1200,1040,1310,1390,1180,1540,1690], color:'#16A34A', fill:'rgba(22,163,74,0.05)' }
+  ]
+});
+createDoughnutChart('userRoleChart', {
+  labels: ['Manufacturer','Supplier','Logistics','Designer','Distributor'],
+  data: [1820, 1240, 680, 420, 661],
+  colors: ['#1565C0','#16A34A','#D97706','#0891B2','#DC2626']
+});
+createBarChart('revenueBarChart', {
+  labels: ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],
+  datasets: [{ label:'Revenue', data:[142,168,185,155,210,234,198,262,295,241,318,348] }]
+});
+
+
+// --- admin scripts ---
+// ---- Order Trend Chart ----
+createLineChart('orderTrendChart', {
+  labels: ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],
+  datasets: [
+    {
+      label: 'Orders Placed',
+      data: [820, 940, 1020, 880, 1150, 1280, 1100, 1380, 1480, 1250, 1620, 1780],
+      color: '#1565C0',
+      fill: 'rgba(21,101,192,0.1)'
+    },
+    {
+      label: 'Orders Fulfilled',
+      data: [780, 900, 970, 830, 1080, 1200, 1040, 1310, 1390, 1180, 1540, 1690],
+      color: '#16A34A',
+      fill: 'rgba(22,163,74,0.05)'
+    }
+  ]
+});
+
+// ---- User Role Distribution Doughnut ----
+createDoughnutChart('userRoleChart', {
+  labels: ['Manufacturer','Supplier','Logistics','Designer','Distributor'],
+  data: [1820, 1240, 680, 420, 661],
+  colors: ['#1565C0','#16A34A','#D97706','#0891B2','#DC2626']
+});
+
+// ---- Revenue Bar Chart ----
+createBarChart('revenueBarChart', {
+  labels: ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],
+  datasets: [{
+    label: 'Revenue (₹L)',
+    data: [142, 168, 185, 155, 210, 234, 198, 262, 295, 241, 318, 348]
+  }]
+});
+
+// ---- Approve / Reject Handlers (placeholders) ----
+function approveUser(userId) {
+  if (confirm('Approve this user account?')) {
+    // POST to /admin/approve-user/<id>/ in Django
+    console.log('Approving user:', userId);
+  }
+}
+function rejectUser(userId) {
+  if (confirm('Reject and remove this user account?')) {
+    // POST to /admin/reject-user/<id>/ in Django
+    console.log('Rejecting user:', userId);
+  }
+}
+
+// --- manufacturer scripts ---
+// Demand Forecast Chart
+createLineChart('demandChart', {
+  labels: ['Apr','May','Jun','Jul','Aug','Sep'],
+  datasets: [
+    {
+      label: 'Historical',
+      data: [420, 455, 490, 510, 540, 580],
+      color: '#1565C0',
+      fill: 'rgba(21,101,192,0.08)'
+    },
+    {
+      label: 'Forecast',
+      data: [null, null, null, null, 540, 620, 710],
+      color: '#D97706',
+      fill: 'rgba(217,119,6,0.06)'
+    }
+  ]
+});
+
+// --- supplier scripts ---
+createLineChart('supplierRevenueChart', {
+  labels: ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],
+  datasets: [{
+    label: 'Revenue (₹L)',
+    data: [9.2, 10.8, 12.1, 10.4, 13.5, 14.8, 13.2, 15.9, 17.0, 14.8, 15.9, 18.2],
+    color: '#16A34A',
+    fill: 'rgba(22,163,74,0.08)'
+  }]
+});
+
+// --- designer scripts ---
+// Send Chat Message
+function sendChatMessage() {
+  const input = document.getElementById('chatInput');
+  const messages = document.getElementById('chatMessages');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const now = new Date();
+  const time = now.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+
+  const wrap = document.createElement('div');
+  wrap.innerHTML = `
+    <div class="chat-bubble sent">${text}</div>
+    <div class="chat-time text-end me-1" style="color:var(--pl-text-muted)">You • ${time}</div>
+  `;
+  messages.appendChild(wrap);
+  messages.scrollTop = messages.scrollHeight;
+  input.value = '';
+}
+
+// Allow Enter key to send
+document.getElementById('chatInput').addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') sendChatMessage();
+});
+
+// --- distributor scripts ---
+createLineChart('marketTrendChart', {
+  labels: ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],
+  datasets: [
+    {
+      label: 'Fasteners',
+      data: [820, 890, 940, 870, 1020, 1180, 1090, 1340, 1420, 1210, 1580, 1760],
+      color: '#1565C0',
+      fill: 'rgba(21,101,192,0.06)'
+    },
+    {
+      label: 'Sheet Metal',
+      data: [680, 710, 740, 720, 750, 760, 740, 780, 800, 760, 810, 830],
+      color: '#D97706',
+      fill: 'rgba(217,119,6,0.05)'
+    },
+    {
+      label: 'Castings',
+      data: [520, 490, 460, 448, 430, 415, 408, 390, 380, 370, 355, 340],
+      color: '#DC2626',
+      fill: 'rgba(220,38,38,0.04)'
+    }
+  ]
+});
+
+</script>
+</body>
+</html>

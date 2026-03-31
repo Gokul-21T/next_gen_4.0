@@ -1,0 +1,584 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard – PartLink{% endblock %}
+
+{% block page_title %}Admin Dashboard{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="#">Home</a></li>
+<li class="breadcrumb-item active">Admin Dashboard</li>
+{% endblock %}
+
+{% block page_actions %}
+<button class="btn-pl-primary" data-bs-toggle="modal" data-bs-target="#reportModal">
+  <i class="bi bi-download"></i> Export Report
+</button>
+{% endblock %}
+
+{% block content %}
+
+<!-- =============================================
+     KPI CARDS ROW
+============================================= -->
+<div class="row g-4 section-gap">
+
+  <!-- Total Users -->
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#1565C0; --kpi-soft-color:#DBEAFE;">
+      <div class="kpi-icon"><i class="bi bi-people-fill"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Total Users</div>
+        <div class="kpi-value">4,821</div>
+        <div class="kpi-delta positive">
+          <i class="bi bi-arrow-up-short"></i> 12.4% vs last month
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Total Orders -->
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#16A34A; --kpi-soft-color:#DCFCE7;">
+      <div class="kpi-icon"><i class="bi bi-bag-check-fill"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Total Orders</div>
+        <div class="kpi-value">12,394</div>
+        <div class="kpi-delta positive">
+          <i class="bi bi-arrow-up-short"></i> 8.7% vs last month
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revenue -->
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#D97706; --kpi-soft-color:#FEF3C7;">
+      <div class="kpi-icon"><i class="bi bi-currency-rupee"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Revenue (MTD)</div>
+        <div class="kpi-value">₹2.4Cr</div>
+        <div class="kpi-delta positive">
+          <i class="bi bi-arrow-up-short"></i> 6.1% vs last month
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pending Approvals -->
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#DC2626; --kpi-soft-color:#FEE2E2;">
+      <div class="kpi-icon"><i class="bi bi-person-exclamation"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Pending Approvals</div>
+        <div class="kpi-value">37</div>
+        <div class="kpi-delta negative">
+          <i class="bi bi-arrow-up-short"></i> Needs attention
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /KPI Row -->
+
+
+<!-- =============================================
+     CHARTS ROW
+============================================= -->
+<div class="row g-4 section-gap">
+
+  <!-- Order Trend Chart – Line -->
+  <div class="col-xl-8">
+    <div class="pl-card">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-graph-up me-2 text-primary"></i>Order Trends (Last 12 Months)</h6>
+        <div class="d-flex gap-2">
+          <select class="form-select form-select-sm" style="width:auto;" id="trendFilter">
+            <option>Monthly</option>
+            <option>Weekly</option>
+            <option>Quarterly</option>
+          </select>
+        </div>
+      </div>
+      <div class="card-body-custom">
+        <div class="chart-container" style="height:280px;">
+          <canvas id="orderTrendChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Growth – Doughnut -->
+  <div class="col-xl-4">
+    <div class="pl-card h-100">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-pie-chart me-2 text-primary"></i>User Roles</h6>
+      </div>
+      <div class="card-body-custom">
+        <div class="chart-container" style="height:200px;">
+          <canvas id="userRoleChart"></canvas>
+        </div>
+        <!-- Legend -->
+        <div class="mt-3">
+          <div class="d-flex flex-wrap gap-3 justify-content-center" style="font-size:12px;">
+            <span><i class="bi bi-circle-fill text-primary me-1"></i>Manufacturer</span>
+            <span><i class="bi bi-circle-fill text-success me-1"></i>Supplier</span>
+            <span><i class="bi bi-circle-fill text-warning me-1"></i>Logistics</span>
+            <span><i class="bi bi-circle-fill text-info me-1"></i>Designer</span>
+            <span><i class="bi bi-circle-fill text-danger me-1"></i>Distributor</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /Charts Row -->
+
+
+<!-- Revenue Bar Chart + System Status -->
+<div class="row g-4 section-gap">
+
+  <div class="col-xl-7">
+    <div class="pl-card">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-bar-chart me-2 text-primary"></i>Monthly Revenue (₹ Lakhs)</h6>
+      </div>
+      <div class="card-body-custom">
+        <div class="chart-container" style="height:240px;">
+          <canvas id="revenueBarChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- System Status -->
+  <div class="col-xl-5">
+    <div class="pl-card h-100">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-display me-2 text-primary"></i>System Status</h6>
+        <span class="status-badge status-active">All Systems Go</span>
+      </div>
+      <div class="card-body-custom">
+        <div class="system-status-item">
+          <div class="d-flex align-items-center">
+            <span class="status-dot online"></span>
+            <span class="fw-medium">API Gateway</span>
+          </div>
+          <div class="text-end">
+            <span class="status-badge status-active">Online</span>
+            <div class="text-muted" style="font-size:11px;">99.98% uptime</div>
+          </div>
+        </div>
+        <div class="system-status-item">
+          <div class="d-flex align-items-center">
+            <span class="status-dot online"></span>
+            <span class="fw-medium">Database Cluster</span>
+          </div>
+          <div class="text-end">
+            <span class="status-badge status-active">Online</span>
+            <div class="text-muted" style="font-size:11px;">12ms avg query</div>
+          </div>
+        </div>
+        <div class="system-status-item">
+          <div class="d-flex align-items-center">
+            <span class="status-dot warning"></span>
+            <span class="fw-medium">Email Service</span>
+          </div>
+          <div class="text-end">
+            <span class="status-badge status-pending">Degraded</span>
+            <div class="text-muted" style="font-size:11px;">2.1s delivery lag</div>
+          </div>
+        </div>
+        <div class="system-status-item">
+          <div class="d-flex align-items-center">
+            <span class="status-dot online"></span>
+            <span class="fw-medium">Storage (S3)</span>
+          </div>
+          <div class="text-end">
+            <span class="status-badge status-active">Online</span>
+            <div class="text-muted" style="font-size:11px;">78% used</div>
+          </div>
+        </div>
+        <div class="system-status-item">
+          <div class="d-flex align-items-center">
+            <span class="status-dot online"></span>
+            <span class="fw-medium">Search Engine</span>
+          </div>
+          <div class="text-end">
+            <span class="status-badge status-active">Online</span>
+            <div class="text-muted" style="font-size:11px;">8ms latency</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- =============================================
+     USER APPROVAL TABLE
+============================================= -->
+<div class="section-gap">
+  <div class="pl-table-wrapper">
+    <div class="pl-table-toolbar">
+      <h6 class="mb-0 fw-bold"><i class="bi bi-person-check me-2 text-primary"></i>Pending User Approvals</h6>
+      <div class="ms-auto d-flex gap-2 flex-wrap">
+        <select class="form-select form-select-sm" style="width:auto;">
+          <option>All Roles</option>
+          <option>Manufacturer</option>
+          <option>Supplier</option>
+          <option>Logistics</option>
+          <option>Designer</option>
+          <option>Distributor</option>
+        </select>
+        <input type="text" class="form-control form-control-sm" placeholder="Search user..." style="width:200px;" data-table-search="approvalTable">
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="pl-table" id="approvalTable">
+        <thead>
+          <tr>
+            <th data-sort="name"><span>User Name</span> <i class="bi bi-arrow-down-up sort-icon"></i></th>
+            <th data-sort="company">Company</th>
+            <th data-sort="role">Role</th>
+            <th data-sort="date">Registered <i class="bi bi-arrow-down-up sort-icon"></i></th>
+            <th>Status</th>
+            <th>Documents</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in pending_users %}
+          <!-- Replace with Django template loop: {% for user in pending_users %} -->
+          <tr>
+            <td>
+              <div class="user-chip">
+                <div class="avatar-sm">{{ user.initials }}</div>
+                <div>
+                  <div class="fw-medium">{{ user.name }}</div>
+                  <div style="font-size:11px;color:var(--pl-text-muted);">{{ user.email }}</div>
+                </div>
+              </div>
+            </td>
+            <td>{{ user.company }}</td>
+            <td><span class="status-badge status-pending">{{ user.role }}</span></td>
+            <td>{{ user.date }}</td>
+            <td><span class="status-badge status-pending">Pending</span></td>
+            <td>
+              <a href="#" class="text-primary small" data-bs-toggle="tooltip" title="View uploaded documents">
+                <i class="bi bi-file-earmark-text me-1"></i>2 docs
+              </a>
+            </td>
+            <td>
+              <div class="d-flex gap-2">
+                <button class="btn-approve" onclick="approveUser({{ user.id }})" data-bs-toggle="tooltip" title="Approve">
+                  <i class="bi bi-check-lg me-1"></i>Approve
+                </button>
+                <button class="btn-reject" onclick="rejectUser({{ user.id }})" data-bs-toggle="tooltip" title="Reject">
+                  <i class="bi bi-x-lg me-1"></i>Reject
+                </button>
+              </div>
+            </td>
+          </tr>
+          {% empty %}
+          <!-- Static fallback rows for UI preview -->
+          <tr>
+            <td>
+              <div class="user-chip">
+                <div class="avatar-sm">RK</div>
+                <div>
+                  <div class="fw-medium">Rajesh Kumar</div>
+                  <div style="font-size:11px;color:var(--pl-text-muted);">rajesh@forgeind.com</div>
+                </div>
+              </div>
+            </td>
+            <td>Forge Industries Pvt. Ltd.</td>
+            <td><span class="status-badge status-pending">Supplier</span></td>
+            <td>28 Mar 2025</td>
+            <td><span class="status-badge status-pending">Pending</span></td>
+            <td><a href="#" class="text-primary small"><i class="bi bi-file-earmark-text me-1"></i>3 docs</a></td>
+            <td>
+              <div class="d-flex gap-2">
+                <button class="btn-approve"><i class="bi bi-check-lg me-1"></i>Approve</button>
+                <button class="btn-reject"><i class="bi bi-x-lg me-1"></i>Reject</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="user-chip">
+                <div class="avatar-sm">PM</div>
+                <div>
+                  <div class="fw-medium">Priya Mehta</div>
+                  <div style="font-size:11px;color:var(--pl-text-muted);">priya@nexlogistics.in</div>
+                </div>
+              </div>
+            </td>
+            <td>Nex Logistics Solutions</td>
+            <td><span class="status-badge status-pending">Logistics</span></td>
+            <td>27 Mar 2025</td>
+            <td><span class="status-badge status-pending">Pending</span></td>
+            <td><a href="#" class="text-primary small"><i class="bi bi-file-earmark-text me-1"></i>2 docs</a></td>
+            <td>
+              <div class="d-flex gap-2">
+                <button class="btn-approve"><i class="bi bi-check-lg me-1"></i>Approve</button>
+                <button class="btn-reject"><i class="bi bi-x-lg me-1"></i>Reject</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="user-chip">
+                <div class="avatar-sm">AS</div>
+                <div>
+                  <div class="fw-medium">Arvind Shah</div>
+                  <div style="font-size:11px;color:var(--pl-text-muted);">arvind@metalcraft.com</div>
+                </div>
+              </div>
+            </td>
+            <td>MetalCraft Design Studio</td>
+            <td><span class="status-badge status-pending">Designer</span></td>
+            <td>26 Mar 2025</td>
+            <td><span class="status-badge status-pending">Pending</span></td>
+            <td><a href="#" class="text-primary small"><i class="bi bi-file-earmark-text me-1"></i>1 doc</a></td>
+            <td>
+              <div class="d-flex gap-2">
+                <button class="btn-approve"><i class="bi bi-check-lg me-1"></i>Approve</button>
+                <button class="btn-reject"><i class="bi bi-x-lg me-1"></i>Reject</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="user-chip">
+                <div class="avatar-sm">SV</div>
+                <div>
+                  <div class="fw-medium">Suresh Verma</div>
+                  <div style="font-size:11px;color:var(--pl-text-muted);">suresh@tatasteelmsme.com</div>
+                </div>
+              </div>
+            </td>
+            <td>TATA Steel MSME Unit</td>
+            <td><span class="status-badge status-pending">Manufacturer</span></td>
+            <td>25 Mar 2025</td>
+            <td><span class="status-badge status-pending">Pending</span></td>
+            <td><a href="#" class="text-primary small"><i class="bi bi-file-earmark-text me-1"></i>4 docs</a></td>
+            <td>
+              <div class="d-flex gap-2">
+                <button class="btn-approve"><i class="bi bi-check-lg me-1"></i>Approve</button>
+                <button class="btn-reject"><i class="bi bi-x-lg me-1"></i>Reject</button>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <!-- Pagination -->
+    <div class="d-flex align-items-center justify-content-between px-4 py-3 border-top">
+      <span style="font-size:13px;color:var(--pl-text-muted);">Showing 4 of 37 pending approvals</span>
+      <nav>
+        <ul class="pagination pagination-sm mb-0">
+          <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+          <li class="page-item active"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+<!-- =============================================
+     REPORTS / FLAGS TABLE
+============================================= -->
+<div class="section-gap">
+  <div class="pl-table-wrapper">
+    <div class="pl-table-toolbar">
+      <h6 class="mb-0 fw-bold"><i class="bi bi-flag me-2 text-danger"></i>Reports & Flags</h6>
+      <div class="ms-auto d-flex gap-2">
+        <select class="form-select form-select-sm" style="width:auto;">
+          <option>All Severity</option>
+          <option>Critical</option>
+          <option>High</option>
+          <option>Medium</option>
+          <option>Low</option>
+        </select>
+        <button class="btn btn-sm btn-outline-primary">
+          <i class="bi bi-funnel me-1"></i>Filter
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="pl-table">
+        <thead>
+          <tr>
+            <th data-sort="id">Report ID</th>
+            <th data-sort="type">Type</th>
+            <th data-sort="subject">Subject</th>
+            <th data-sort="reported_by">Reported By</th>
+            <th>Severity</th>
+            <th data-sort="date">Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="fw-mono text-primary" style="font-family:monospace;">#RPT-1092</span></td>
+            <td>Fraud Claim</td>
+            <td>Supplier overcharged for Part #PL-882</td>
+            <td>Tata Motors Ltd.</td>
+            <td><span class="status-badge status-rejected">Critical</span></td>
+            <td>29 Mar 2025</td>
+            <td><span class="status-badge status-pending">Open</span></td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#reportDetailModal">
+                <i class="bi bi-eye"></i> Review
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="text-primary" style="font-family:monospace;">#RPT-1091</span></td>
+            <td>Quality Issue</td>
+            <td>Parts delivered not matching spec sheet</td>
+            <td>Maruti Suzuki India</td>
+            <td><span class="status-badge status-pending">High</span></td>
+            <td>28 Mar 2025</td>
+            <td><span class="status-badge status-pending">Under Review</span></td>
+            <td><button class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i> Review</button></td>
+          </tr>
+          <tr>
+            <td><span class="text-primary" style="font-family:monospace;">#RPT-1088</span></td>
+            <td>Late Delivery</td>
+            <td>Order #ORD-4421 delayed by 12 days</td>
+            <td>Bajaj Auto Ltd.</td>
+            <td><span class="status-badge" style="background:#EDE9FE;color:#7C3AED;">Medium</span></td>
+            <td>25 Mar 2025</td>
+            <td><span class="status-badge status-approved">Resolved</span></td>
+            <td><button class="btn btn-sm btn-outline-secondary"><i class="bi bi-check2"></i> Closed</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- =============================================
+     EXPORT REPORT MODAL
+============================================= -->
+<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reportModalLabel">
+          <i class="bi bi-download me-2 text-primary"></i>Export Report
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="exportForm">
+          <div class="mb-3">
+            <label class="form-label">Report Type</label>
+            <select class="form-select">
+              <option>User Summary Report</option>
+              <option>Revenue Report</option>
+              <option>Order Analytics</option>
+              <option>Flags & Incidents</option>
+            </select>
+          </div>
+          <div class="row mb-3">
+            <div class="col-6">
+              <label class="form-label">From Date</label>
+              <input type="date" class="form-control" value="2025-03-01">
+            </div>
+            <div class="col-6">
+              <label class="form-label">To Date</label>
+              <input type="date" class="form-control" value="2025-03-31">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Format</label>
+            <div class="d-flex gap-3">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="format" id="fmtCSV" checked>
+                <label class="form-check-label" for="fmtCSV">CSV</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="format" id="fmtPDF">
+                <label class="form-check-label" for="fmtPDF">PDF</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="format" id="fmtXLS">
+                <label class="form-check-label" for="fmtXLS">Excel</label>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pl-primary" type="submit">
+          <i class="bi bi-download me-1"></i> Generate & Download
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// ---- Order Trend Chart ----
+createLineChart('orderTrendChart', {
+  labels: ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],
+  datasets: [
+    {
+      label: 'Orders Placed',
+      data: [820, 940, 1020, 880, 1150, 1280, 1100, 1380, 1480, 1250, 1620, 1780],
+      color: '#1565C0',
+      fill: 'rgba(21,101,192,0.1)'
+    },
+    {
+      label: 'Orders Fulfilled',
+      data: [780, 900, 970, 830, 1080, 1200, 1040, 1310, 1390, 1180, 1540, 1690],
+      color: '#16A34A',
+      fill: 'rgba(22,163,74,0.05)'
+    }
+  ]
+});
+
+// ---- User Role Distribution Doughnut ----
+createDoughnutChart('userRoleChart', {
+  labels: ['Manufacturer','Supplier','Logistics','Designer','Distributor'],
+  data: [1820, 1240, 680, 420, 661],
+  colors: ['#1565C0','#16A34A','#D97706','#0891B2','#DC2626']
+});
+
+// ---- Revenue Bar Chart ----
+createBarChart('revenueBarChart', {
+  labels: ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],
+  datasets: [{
+    label: 'Revenue (₹L)',
+    data: [142, 168, 185, 155, 210, 234, 198, 262, 295, 241, 318, 348]
+  }]
+});
+
+// ---- Approve / Reject Handlers (placeholders) ----
+function approveUser(userId) {
+  if (confirm('Approve this user account?')) {
+    // POST to /admin/approve-user/<id>/ in Django
+    console.log('Approving user:', userId);
+  }
+}
+function rejectUser(userId) {
+  if (confirm('Reject and remove this user account?')) {
+    // POST to /admin/reject-user/<id>/ in Django
+    console.log('Rejecting user:', userId);
+  }
+}
+</script>
+{% endblock %}

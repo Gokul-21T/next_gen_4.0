@@ -1,0 +1,385 @@
+{% extends "base.html" %}
+
+{% block title %}Part Designer Dashboard – PartLink{% endblock %}
+{% block page_title %}Part Designer Dashboard{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="#">Home</a></li>
+<li class="breadcrumb-item active">Designer Dashboard</li>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* Chat UI Specific */
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 420px;
+  }
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    background: var(--pl-bg);
+  }
+  .chat-bubble {
+    max-width: 75%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .chat-bubble.received {
+    background: white;
+    border: 1px solid var(--pl-border);
+    border-bottom-left-radius: 4px;
+    margin-right: auto;
+  }
+  .chat-bubble.sent {
+    background: var(--pl-primary);
+    color: white;
+    border-bottom-right-radius: 4px;
+    margin-left: auto;
+  }
+  .chat-time {
+    font-size: 10px;
+    opacity: 0.6;
+    margin-top: 4px;
+  }
+  .chat-input-area {
+    border-top: 1.5px solid var(--pl-border);
+    padding: 12px;
+    background: white;
+  }
+  /* Version History */
+  .version-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--pl-border);
+  }
+  .version-item:last-child { border-bottom: none; }
+  .version-number {
+    background: var(--pl-primary-soft);
+    color: var(--pl-primary);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- KPI Cards -->
+<div class="row g-4 section-gap">
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#1565C0;--kpi-soft-color:#DBEAFE;">
+      <div class="kpi-icon"><i class="bi bi-folder2-open"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Active Projects</div>
+        <div class="kpi-value">12</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>3 new this week</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#16A34A;--kpi-soft-color:#DCFCE7;">
+      <div class="kpi-icon"><i class="bi bi-file-earmark-check"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Files Uploaded</div>
+        <div class="kpi-value">84</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>12 this month</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#D97706;--kpi-soft-color:#FEF3C7;">
+      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Revisions</div>
+        <div class="kpi-value">38</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>Across 12 projects</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#0891B2;--kpi-soft-color:#CFFAFE;">
+      <div class="kpi-icon"><i class="bi bi-chat-dots"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Unread Messages</div>
+        <div class="kpi-value">7</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>2 from clients today</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- File Upload + Project Requests -->
+<div class="row g-4 section-gap">
+
+  <!-- File Upload UI -->
+  <div class="col-xl-5">
+    <div class="pl-card h-100">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-cloud-upload me-2 text-primary"></i>Upload Design Files</h6>
+      </div>
+      <div class="card-body-custom">
+        <!-- Drag & Drop Zone -->
+        <div class="upload-zone" id="designUploadZone">
+          <input type="file" class="d-none" id="designFilesInput" multiple accept=".dwg,.dxf,.step,.stl,.pdf,.stp,.iges">
+          <i class="bi bi-cloud-upload upload-icon"></i>
+          <h6 class="fw-semibold mt-2 mb-1">Drag & Drop Files Here</h6>
+          <p class="text-muted mb-3" style="font-size:13px;">or click to browse your computer</p>
+          <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
+            <span class="badge" style="background:var(--pl-bg);color:var(--pl-text-muted);border:1px solid var(--pl-border);">DWG</span>
+            <span class="badge" style="background:var(--pl-bg);color:var(--pl-text-muted);border:1px solid var(--pl-border);">DXF</span>
+            <span class="badge" style="background:var(--pl-bg);color:var(--pl-text-muted);border:1px solid var(--pl-border);">STEP</span>
+            <span class="badge" style="background:var(--pl-bg);color:var(--pl-text-muted);border:1px solid var(--pl-border);">STL</span>
+            <span class="badge" style="background:var(--pl-bg);color:var(--pl-text-muted);border:1px solid var(--pl-border);">IGES</span>
+            <span class="badge" style="background:var(--pl-bg);color:var(--pl-text-muted);border:1px solid var(--pl-border);">PDF</span>
+          </div>
+          <div class="upload-hint text-muted" style="font-size:12px;">Max 25MB per file</div>
+        </div>
+
+        <!-- Uploaded Files List -->
+        <div class="file-list mt-2" id="uploadedFilesList"></div>
+
+        <!-- Attach to Project -->
+        <div class="mt-3">
+          <label class="form-label">Attach to Project</label>
+          <select class="form-select mb-2">
+            <option value="">Select project...</option>
+            <option>PRJ-2048 – Gear Box Housing</option>
+            <option>PRJ-2041 – Engine Mount Bracket</option>
+            <option>PRJ-2035 – Hydraulic Valve Body</option>
+          </select>
+          <label class="form-label">Version Notes</label>
+          <textarea class="form-control mb-3" rows="2" placeholder="e.g. Updated tolerance for bore diameter, Rev C"></textarea>
+          <button class="btn-pl-primary w-100 justify-content-center">
+            <i class="bi bi-cloud-upload me-1"></i> Upload Files
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Requests + Version History stacked -->
+  <div class="col-xl-7">
+
+    <!-- Project Requests List -->
+    <div class="pl-card mb-4">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-clipboard-list me-2 text-primary"></i>Project Requests</h6>
+        <span class="status-badge status-pending">5 Pending</span>
+      </div>
+      <div class="card-body-custom p-0">
+        {% for project in project_requests %}{% empty %}
+        <div class="p-3 border-bottom" style="cursor:pointer;" onmouseover="this.style.background='var(--pl-bg)'" onmouseout="this.style.background=''">
+          <div class="d-flex align-items-start justify-content-between">
+            <div>
+              <div class="fw-semibold" style="font-size:13.5px;">PRJ-2051 – Custom Gear Housing Design</div>
+              <div style="font-size:12px;color:var(--pl-text-muted);">
+                Tata Motors Ltd. • Requested: 30 Mar 2025 • Deadline: 15 Apr 2025
+              </div>
+              <div class="mt-1 d-flex gap-2 flex-wrap">
+                <span class="badge" style="background:var(--pl-primary-soft);color:var(--pl-primary);font-size:10px;">SolidWorks</span>
+                <span class="badge bg-light border text-dark" style="font-size:10px;">DXF + PDF</span>
+              </div>
+            </div>
+            <span class="status-badge status-pending ms-2 flex-shrink-0">New</span>
+          </div>
+        </div>
+        <div class="p-3 border-bottom" style="cursor:pointer;" onmouseover="this.style.background='var(--pl-bg)'" onmouseout="this.style.background=''">
+          <div class="d-flex align-items-start justify-content-between">
+            <div>
+              <div class="fw-semibold" style="font-size:13.5px;">PRJ-2049 – Engine Mount Bracket Rev D</div>
+              <div style="font-size:12px;color:var(--pl-text-muted);">
+                Bajaj Auto Ltd. • Requested: 28 Mar 2025 • Deadline: 10 Apr 2025
+              </div>
+              <div class="mt-1">
+                <span class="badge bg-light border text-dark" style="font-size:10px;">IGES + STEP</span>
+              </div>
+            </div>
+            <span class="status-badge status-transit ms-2 flex-shrink-0">In Progress</span>
+          </div>
+        </div>
+        <div class="p-3" style="cursor:pointer;" onmouseover="this.style.background='var(--pl-bg)'" onmouseout="this.style.background=''">
+          <div class="d-flex align-items-start justify-content-between">
+            <div>
+              <div class="fw-semibold" style="font-size:13.5px;">PRJ-2047 – Hydraulic Valve 3D Model</div>
+              <div style="font-size:12px;color:var(--pl-text-muted);">
+                Maruti Suzuki India • Requested: 25 Mar 2025 • Deadline: 05 Apr 2025
+              </div>
+              <div class="mt-1">
+                <span class="badge" style="background:var(--pl-danger-soft);color:var(--pl-danger);font-size:10px;">Urgent</span>
+                <span class="badge bg-light border text-dark ms-1" style="font-size:10px;">STL + PDF</span>
+              </div>
+            </div>
+            <span class="status-badge status-approved ms-2 flex-shrink-0">Review</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Version History UI -->
+    <div class="pl-card">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-clock-history me-2 text-primary"></i>Version History – PRJ-2048</h6>
+        <select class="form-select form-select-sm" style="width:auto;">
+          <option>PRJ-2048 – Gear Box Housing</option>
+          <option>PRJ-2041 – Engine Mount</option>
+        </select>
+      </div>
+      <div class="card-body-custom">
+        {% for version in version_history %}{% empty %}
+        <div class="version-item">
+          <div class="version-number">v3.2</div>
+          <div class="flex-1">
+            <div class="fw-medium" style="font-size:13.5px;">Gear_Housing_Rev3_2.dwg <span class="badge bg-primary ms-1" style="font-size:10px;">Current</span></div>
+            <div style="font-size:12px;color:var(--pl-text-muted);">Updated bore diameter tolerance: ±0.02mm • 30 Mar 2025 • You</div>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-primary" title="Download"><i class="bi bi-download"></i></button>
+          </div>
+        </div>
+        <div class="version-item">
+          <div class="version-number">v3.1</div>
+          <div class="flex-1">
+            <div class="fw-medium" style="font-size:13.5px;">Gear_Housing_Rev3_1.dwg</div>
+            <div style="font-size:12px;color:var(--pl-text-muted);">Wall thickness changed per client feedback • 27 Mar 2025 • You</div>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-secondary" title="Download"><i class="bi bi-download"></i></button>
+            <button class="btn btn-sm btn-outline-warning" title="Restore"><i class="bi bi-arrow-counterclockwise"></i></button>
+          </div>
+        </div>
+        <div class="version-item">
+          <div class="version-number">v3.0</div>
+          <div class="flex-1">
+            <div class="fw-medium" style="font-size:13.5px;">Gear_Housing_Rev3_0.dwg</div>
+            <div style="font-size:12px;color:var(--pl-text-muted);">Major redesign – Draft angle corrections • 22 Mar 2025 • You</div>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-download"></i></button>
+            <button class="btn btn-sm btn-outline-warning"><i class="bi bi-arrow-counterclockwise"></i></button>
+          </div>
+        </div>
+        <div class="version-item">
+          <div class="version-number">v2.0</div>
+          <div class="flex-1">
+            <div class="fw-medium" style="font-size:13.5px;">Gear_Housing_Rev2_0.dwg</div>
+            <div style="font-size:12px;color:var(--pl-text-muted);">Initial draft submission • 15 Mar 2025 • You</div>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-download"></i></button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div><!-- /col -->
+</div>
+
+<!-- Chat Interface -->
+<div class="section-gap">
+  <div class="pl-card" style="max-width:700px;">
+    <div class="card-header-custom">
+      <div class="d-flex align-items-center gap-2">
+        <div class="avatar-sm" style="background:linear-gradient(135deg,#1565C0,#42A5F5);">TM</div>
+        <div>
+          <h6 class="card-title-custom mb-0">Tata Motors – Gear Housing Project</h6>
+          <div style="font-size:11px;color:var(--pl-success);font-weight:600;"><i class="bi bi-circle-fill" style="font-size:8px;"></i> Online</div>
+        </div>
+      </div>
+    </div>
+    <div class="chat-container">
+      <div class="chat-messages" id="chatMessages">
+
+        <!-- Received Message -->
+        <div>
+          <div class="chat-bubble received">
+            Hi, can you revise the bore diameter tolerance to ±0.02mm? Our manufacturing team flagged it.
+          </div>
+          <div class="chat-time text-muted ms-1">Priya M. • 10:32 AM</div>
+        </div>
+
+        <!-- Sent Message -->
+        <div>
+          <div class="chat-bubble sent">
+            Sure! I'll update Rev 3.2 with the corrected tolerance. Should be ready by EOD.
+          </div>
+          <div class="chat-time text-end me-1" style="color:rgba(255,255,255,0.6)">You • 10:35 AM</div>
+        </div>
+
+        <!-- Received -->
+        <div>
+          <div class="chat-bubble received">
+            <i class="bi bi-paperclip me-1"></i>
+            <a href="#" class="text-primary">Gear_Housing_Specs_v3.pdf</a>
+            <div class="text-muted" style="font-size:11px;margin-top:2px;">Updated spec sheet attached</div>
+          </div>
+          <div class="chat-time text-muted ms-1">Priya M. • 10:40 AM</div>
+        </div>
+
+        <!-- Sent -->
+        <div>
+          <div class="chat-bubble sent">
+            Got it, reviewing the spec sheet now. I'll upload the revised file shortly.
+          </div>
+          <div class="chat-time text-end me-1" style="color:rgba(255,255,255,0.6)">You • 10:42 AM</div>
+        </div>
+
+      </div>
+      <!-- Chat Input -->
+      <div class="chat-input-area">
+        <div class="d-flex gap-2">
+          <button class="btn btn-light border" title="Attach file">
+            <i class="bi bi-paperclip"></i>
+          </button>
+          <input type="text" class="form-control" id="chatInput" placeholder="Type a message..." autocomplete="off">
+          <button class="btn-pl-primary" onclick="sendChatMessage()" title="Send">
+            <i class="bi bi-send"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Send Chat Message
+function sendChatMessage() {
+  const input = document.getElementById('chatInput');
+  const messages = document.getElementById('chatMessages');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const now = new Date();
+  const time = now.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+
+  const wrap = document.createElement('div');
+  wrap.innerHTML = `
+    <div class="chat-bubble sent">${text}</div>
+    <div class="chat-time text-end me-1" style="color:var(--pl-text-muted)">You • ${time}</div>
+  `;
+  messages.appendChild(wrap);
+  messages.scrollTop = messages.scrollHeight;
+  input.value = '';
+}
+
+// Allow Enter key to send
+document.getElementById('chatInput').addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') sendChatMessage();
+});
+</script>
+{% endblock %}

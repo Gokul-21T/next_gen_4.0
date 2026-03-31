@@ -1,0 +1,338 @@
+{% extends "base.html" %}
+
+{% block title %}Logistics Dashboard – PartLink{% endblock %}
+{% block page_title %}Logistics Dashboard{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="#">Home</a></li>
+<li class="breadcrumb-item active">Logistics Dashboard</li>
+{% endblock %}
+
+{% block content %}
+
+<!-- KPI Cards -->
+<div class="row g-4 section-gap">
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#1565C0;--kpi-soft-color:#DBEAFE;">
+      <div class="kpi-icon"><i class="bi bi-truck"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Active Shipments</div>
+        <div class="kpi-value">42</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>8 dispatched today</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#16A34A;--kpi-soft-color:#DCFCE7;">
+      <div class="kpi-icon"><i class="bi bi-check2-all"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Delivered (MTD)</div>
+        <div class="kpi-value">218</div>
+        <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i>96.2% on-time rate</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#D97706;--kpi-soft-color:#FEF3C7;">
+      <div class="kpi-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Pending Requests</div>
+        <div class="kpi-value">15</div>
+        <div class="kpi-delta negative"><i class="bi bi-arrow-up-short"></i>Awaiting pickup</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="kpi-card" style="--kpi-color:#DC2626;--kpi-soft-color:#FEE2E2;">
+      <div class="kpi-icon"><i class="bi bi-exclamation-triangle"></i></div>
+      <div class="kpi-body">
+        <div class="kpi-label">Delayed</div>
+        <div class="kpi-value">4</div>
+        <div class="kpi-delta negative"><i class="bi bi-arrow-up-short"></i>Needs action</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Shipment Requests Table + Notification Panel -->
+<div class="row g-4 section-gap">
+
+  <!-- Shipment Requests Table -->
+  <div class="col-xl-8">
+    <div class="pl-table-wrapper">
+      <div class="pl-table-toolbar">
+        <h6 class="mb-0 fw-bold"><i class="bi bi-truck me-2 text-primary"></i>Shipment Requests</h6>
+        <div class="ms-auto d-flex gap-2">
+          <input type="text" class="form-control form-control-sm" placeholder="Search..." style="width:160px;" data-table-search="shipmentTable">
+          <select class="form-select form-select-sm" style="width:auto;">
+            <option>All Status</option>
+            <option>Pending</option>
+            <option>In Transit</option>
+            <option>Delivered</option>
+            <option>Delayed</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="pl-table" id="shipmentTable">
+          <thead>
+            <tr>
+              <th data-sort="id">Ship ID</th>
+              <th data-sort="order">Order Ref</th>
+              <th>From → To</th>
+              <th data-sort="weight">Weight</th>
+              <th data-sort="eta">ETA</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-family:monospace;font-size:12px;">SHP-772</td>
+              <td style="font-family:monospace;font-size:12px;">#ORD-4892</td>
+              <td><span style="font-size:12.5px;">Pune <i class="bi bi-arrow-right text-muted mx-1"></i> Chennai</span></td>
+              <td>380 kg</td>
+              <td>02 Apr 2025</td>
+              <td><span class="status-badge status-transit">In Transit</span></td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#trackModal">
+                  <i class="bi bi-geo-alt me-1"></i>Track
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-family:monospace;font-size:12px;">SHP-771</td>
+              <td style="font-family:monospace;font-size:12px;">#ORD-4885</td>
+              <td><span style="font-size:12.5px;">Ahmedabad <i class="bi bi-arrow-right text-muted mx-1"></i> Mumbai</span></td>
+              <td>220 kg</td>
+              <td>01 Apr 2025</td>
+              <td><span class="status-badge status-pending">Pending Pickup</span></td>
+              <td>
+                <button class="btn btn-sm btn-outline-success">
+                  <i class="bi bi-check2 me-1"></i>Accept
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-family:monospace;font-size:12px;">SHP-768</td>
+              <td style="font-family:monospace;font-size:12px;">#ORD-4871</td>
+              <td><span style="font-size:12.5px;">Chennai <i class="bi bi-arrow-right text-muted mx-1"></i> Delhi</span></td>
+              <td>1,200 kg</td>
+              <td>28 Mar 2025</td>
+              <td><span class="status-badge status-rejected">Delayed</span></td>
+              <td>
+                <button class="btn btn-sm btn-outline-warning text-warning" data-bs-toggle="modal" data-bs-target="#trackModal">
+                  <i class="bi bi-exclamation-triangle me-1"></i>Update
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-family:monospace;font-size:12px;">SHP-765</td>
+              <td style="font-family:monospace;font-size:12px;">#ORD-4860</td>
+              <td><span style="font-size:12.5px;">Mumbai <i class="bi bi-arrow-right text-muted mx-1"></i> Hyderabad</span></td>
+              <td>670 kg</td>
+              <td>30 Mar 2025</td>
+              <td><span class="status-badge status-approved">Delivered</span></td>
+              <td><button class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-text me-1"></i>POD</button></td>
+            </tr>
+            <tr>
+              <td style="font-family:monospace;font-size:12px;">SHP-763</td>
+              <td style="font-family:monospace;font-size:12px;">#ORD-4855</td>
+              <td><span style="font-size:12.5px;">Jaipur <i class="bi bi-arrow-right text-muted mx-1"></i> Pune</span></td>
+              <td>90 kg</td>
+              <td>03 Apr 2025</td>
+              <td><span class="status-badge status-transit">In Transit</span></td>
+              <td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#trackModal"><i class="bi bi-geo-alt me-1"></i>Track</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Panel -->
+  <div class="col-xl-4">
+    <div class="pl-card h-100">
+      <div class="card-header-custom">
+        <h6 class="card-title-custom"><i class="bi bi-bell me-2 text-primary"></i>Notifications</h6>
+        <a href="#" class="text-primary small">Mark all read</a>
+      </div>
+      <div class="card-body-custom p-0">
+        <!-- Notification Item -->
+        <div class="notif-item unread">
+          <div class="notif-icon bg-danger-soft">
+            <i class="bi bi-exclamation-triangle text-danger"></i>
+          </div>
+          <div class="notif-content">
+            <p class="mb-0 fw-medium" style="font-size:13px;">Shipment SHP-768 is delayed</p>
+            <small class="text-muted">Route Chennai → Delhi blocked. Rerouting needed.</small>
+            <div style="font-size:11px;color:var(--pl-text-light);margin-top:3px;">15 min ago</div>
+          </div>
+        </div>
+        <div class="notif-item unread">
+          <div class="notif-icon bg-success-soft">
+            <i class="bi bi-check-circle text-success"></i>
+          </div>
+          <div class="notif-content">
+            <p class="mb-0 fw-medium" style="font-size:13px;">SHP-765 delivered successfully</p>
+            <small class="text-muted">Mumbai → Hyderabad. POD received.</small>
+            <div style="font-size:11px;color:var(--pl-text-light);margin-top:3px;">1 hr ago</div>
+          </div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon bg-primary-soft">
+            <i class="bi bi-truck text-primary"></i>
+          </div>
+          <div class="notif-content">
+            <p class="mb-0 fw-medium" style="font-size:13px;">New pickup request – SHP-771</p>
+            <small class="text-muted">220 kg from Ahmedabad to Mumbai</small>
+            <div style="font-size:11px;color:var(--pl-text-light);margin-top:3px;">3 hrs ago</div>
+          </div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon bg-warning-soft">
+            <i class="bi bi-cloud-rain text-warning"></i>
+          </div>
+          <div class="notif-content">
+            <p class="mb-0 fw-medium" style="font-size:13px;">Weather alert – NH48 corridor</p>
+            <small class="text-muted">Heavy rain forecast. Delays possible for 3 shipments.</small>
+            <div style="font-size:11px;color:var(--pl-text-light);margin-top:3px;">5 hrs ago</div>
+          </div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon bg-info-soft">
+            <i class="bi bi-geo-alt text-info"></i>
+          </div>
+          <div class="notif-content">
+            <p class="mb-0 fw-medium" style="font-size:13px;">SHP-772 checkpoint passed</p>
+            <small class="text-muted">Crossed Nagpur toll. ETA unchanged.</small>
+            <div style="font-size:11px;color:var(--pl-text-light);margin-top:3px;">Yesterday</div>
+          </div>
+        </div>
+        <div class="p-3 text-center border-top">
+          <a href="/logistics/notifications" class="text-primary small fw-medium">View all notifications →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Delivery Tracking Progress UI -->
+<div class="section-gap">
+  <div class="pl-card">
+    <div class="card-header-custom">
+      <h6 class="card-title-custom"><i class="bi bi-geo-alt me-2 text-primary"></i>Live Delivery Tracking – SHP-772</h6>
+      <span class="status-badge status-transit">In Transit</span>
+    </div>
+    <div class="card-body-custom">
+      <div class="row g-4">
+        <div class="col-md-8">
+          <!-- Route Progress Bar -->
+          <div class="mb-4">
+            <div class="d-flex justify-content-between mb-2" style="font-size:12.5px;">
+              <span class="fw-semibold text-primary">Pune</span>
+              <span class="text-muted">→ 65% of route →</span>
+              <span class="fw-semibold">Chennai</span>
+            </div>
+            <div class="progress" style="height:14px;border-radius:7px;">
+              <div class="progress-bar bg-primary" style="width:65%;" role="progressbar">
+                <span style="font-size:11px;">840 km traveled</span>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between mt-1" style="font-size:11px;color:var(--pl-text-muted);">
+              <span>Departed: 29 Mar 10:00 AM</span>
+              <span>ETA: 02 Apr 06:00 PM</span>
+            </div>
+          </div>
+          <!-- Timeline -->
+          <div class="tracking-timeline">
+            <div class="tracking-step">
+              <div class="tracking-dot done"><i class="bi bi-check text-white" style="font-size:9px;"></i></div>
+              <div class="tracking-step-title">Order Picked Up – Pune Warehouse</div>
+              <div class="tracking-step-info">29 Mar 2025 • 10:15 AM • Driver: Ramesh Singh</div>
+            </div>
+            <div class="tracking-step">
+              <div class="tracking-dot done"><i class="bi bi-check text-white" style="font-size:9px;"></i></div>
+              <div class="tracking-step-title">Departed Pune – Maharashtra</div>
+              <div class="tracking-step-info">29 Mar 2025 • 11:00 AM</div>
+            </div>
+            <div class="tracking-step">
+              <div class="tracking-dot done"><i class="bi bi-check text-white" style="font-size:9px;"></i></div>
+              <div class="tracking-step-title">Nagpur Checkpoint Crossed</div>
+              <div class="tracking-step-info">30 Mar 2025 • 08:30 AM</div>
+            </div>
+            <div class="tracking-step">
+              <div class="tracking-dot active"></div>
+              <div class="tracking-step-title">Currently Near Vijayawada – Andhra Pradesh</div>
+              <div class="tracking-step-info">31 Mar 2025 • 04:00 PM (Live)</div>
+            </div>
+            <div class="tracking-step">
+              <div class="tracking-dot"></div>
+              <div class="tracking-step-title">Arrival at Chennai Warehouse</div>
+              <div class="tracking-step-info">Expected: 02 Apr 2025 • 06:00 PM</div>
+            </div>
+            <div class="tracking-step">
+              <div class="tracking-dot"></div>
+              <div class="tracking-step-title">Final Delivery to Customer</div>
+              <div class="tracking-step-info">Expected: 03 Apr 2025 • 10:00 AM</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <!-- Shipment Details Card -->
+          <div class="p-3 rounded" style="background:var(--pl-bg);border:1.5px solid var(--pl-border);">
+            <h6 class="fw-bold mb-3">Shipment Details</h6>
+            <table style="font-size:13px;width:100%;">
+              <tr><td class="text-muted pb-2">Shipment ID</td><td class="fw-medium pb-2 text-end">SHP-772</td></tr>
+              <tr><td class="text-muted pb-2">Order Ref</td><td class="fw-medium pb-2 text-end text-primary">#ORD-4892</td></tr>
+              <tr><td class="text-muted pb-2">Item</td><td class="fw-medium pb-2 text-end">Steel Bolt M12</td></tr>
+              <tr><td class="text-muted pb-2">Weight</td><td class="fw-medium pb-2 text-end">380 kg</td></tr>
+              <tr><td class="text-muted pb-2">Packages</td><td class="fw-medium pb-2 text-end">24 boxes</td></tr>
+              <tr><td class="text-muted pb-2">Driver</td><td class="fw-medium pb-2 text-end">Ramesh Singh</td></tr>
+              <tr><td class="text-muted pb-2">Vehicle No.</td><td class="fw-medium pb-2 text-end">MH-12 AB 4521</td></tr>
+              <tr><td class="text-muted">Distance</td><td class="fw-medium text-end">1,292 km</td></tr>
+            </table>
+            <div class="divider"></div>
+            <button class="btn-pl-outline w-100 justify-content-center">
+              <i class="bi bi-telephone me-1"></i> Contact Driver
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tracking Modal (for table Track buttons) -->
+<div class="modal fade" id="trackModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-geo-alt me-2 text-primary"></i>Quick Track</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="tracking-timeline">
+          <div class="tracking-step">
+            <div class="tracking-dot done"><i class="bi bi-check text-white" style="font-size:9px;"></i></div>
+            <div class="tracking-step-title">Picked Up</div>
+            <div class="tracking-step-info">29 Mar 2025</div>
+          </div>
+          <div class="tracking-step">
+            <div class="tracking-dot active"></div>
+            <div class="tracking-step-title">In Transit</div>
+            <div class="tracking-step-info">Current Location: Vijayawada</div>
+          </div>
+          <div class="tracking-step">
+            <div class="tracking-dot"></div>
+            <div class="tracking-step-title">Expected Delivery</div>
+            <div class="tracking-step-info">02 Apr 2025</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
